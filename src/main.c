@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <malloc.h>
 #include <unistd.h>
+#include <stdlib.h>
 #include "common.h"
 
 typedef struct CpuStats {
@@ -82,6 +83,7 @@ int main() {
         sleep(1);
         get_stats(current_stats, core_count);
 
+        system("clear");
         for (int i = 0; i < core_count; ++i) {
             printf("CPU %d usage: %f\n", i, get_cpu_usage(&prev_stats[i], &current_stats[i]));
         }
