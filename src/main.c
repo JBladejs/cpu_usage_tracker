@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <malloc.h>
+#include <unistd.h>
 #include "common.h"
 
 typedef struct CpuStats {
@@ -53,11 +54,27 @@ void get_stats(CpuStats *stat, u16 core_count) {
     }
 }
 
+f64 get_cpu_usage(CpuStats *stat) {
+    CpuStats *prev = &stat[0];
+    CpuStats *current = &stat[1];
+    u64 total_prev = prev->user + prev->nice + prev->system + prev->idle + prev->iowait + prev->irq + prev->softirq + prev->steal;
+    u64 total_current = current->user + current->nice + current->system + current->idle + current->iowait + current->irq + current->softirq + current->steal;
+    u64 total_diff = total_current - total_prev;
+    u64 idle_diff = current->idle - prev->idle;
+    f64 usage = (f64) (total_diff - idle_diff) / (f64) total_diff;
+    return usage;
+}
+
 int main() {
     u16 core_count = get_core_count();
-    CpuStats *stats = malloc(sizeof(CpuStats) * core_count);
-    get_stats(stats, core_count);
-    for (int i = 0; i < core_count; ++i) {
-        printf("cpu%d user: %ld\n", i, stats[i].user);
-    }
+    CpuStats *prev_stats = malloc(sizeof(CpuStats) * core_count);
+    CpuStats *current_stats = malloc(sizeof(CpuStats) * core_count);
+    get_stats(prev_stats, core_count);
+    sleep(1);
+    get_stats(current_stats, core_count);
+    prev_stats[1] = current_stats[0];
+
+    f64 usage = get_cpu_usage(prev_stats);
+    printf("%f\n", usage);
+    return 0;
 }
