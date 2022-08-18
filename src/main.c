@@ -57,11 +57,21 @@ void get_stats(CpuStats *stat, u16 core_count) {
 f64 get_cpu_usage(CpuStats *stat) {
     CpuStats *prev = &stat[0];
     CpuStats *current = &stat[1];
-    u64 total_prev = prev->user + prev->nice + prev->system + prev->idle + prev->iowait + prev->irq + prev->softirq + prev->steal;
-    u64 total_current = current->user + current->nice + current->system + current->idle + current->iowait + current->irq + current->softirq + current->steal;
-    u64 total_diff = total_current - total_prev;
-    u64 idle_diff = current->idle - prev->idle;
-    f64 usage = (f64) (total_diff - idle_diff) / (f64) total_diff;
+
+    u64 prev_idle = prev->idle + prev->iowait;
+    u64 idle = current->idle + current->iowait;
+
+    u64 prev_non_idle = prev->user + prev->nice + prev->system + prev->irq + prev->softirq + prev->steal;
+    u64 non_idle = current->user + current->nice + current->system + current->irq + current->softirq + current->steal;
+
+    u64 prev_total = prev_idle + prev_non_idle;
+    u64 total = idle + non_idle;
+
+    u64 total_diff = total - prev_total;
+    u64 idle_diff = idle - prev_idle;
+
+    f64 usage = ((f64) (total_diff - idle_diff) / (f64) total_diff) * 100.0f;
+
     return usage;
 }
 
