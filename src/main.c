@@ -14,7 +14,10 @@ int main() {
         while (1) {
             fscanf(fp, "%s %ld %ld %ld %ld %*ld %*ld %*ld %*ld %*ld %*ld",
                    cpu_name, &user, &nice, &system, &idle);
+
+            /* Stop if reading info different from cpu core stats */
             if (cpu_name[0] != 'c') break;
+
             printf("cpu: %s, user mode: %ld, nice mode: %ld, system mode: %ld, idle: %ld\n",
                    cpu_name, user, nice, system, idle);
         }
