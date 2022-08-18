@@ -54,10 +54,7 @@ void get_stats(CpuStats *stat, u16 core_count) {
     }
 }
 
-f64 get_cpu_usage(CpuStats *stat) {
-    CpuStats *prev = &stat[0];
-    CpuStats *current = &stat[1];
-
+f64 get_cpu_usage(CpuStats *prev, CpuStats *current) {
     u64 prev_idle = prev->idle + prev->iowait;
     u64 idle = current->idle + current->iowait;
 
@@ -84,10 +81,10 @@ int main() {
         get_stats(prev_stats, core_count);
         sleep(1);
         get_stats(current_stats, core_count);
-        prev_stats[1] = current_stats[0];
 
-        f64 usage = get_cpu_usage(prev_stats);
-        printf("%f\n", usage);
+        for (int i = 0; i < core_count; ++i) {
+            printf("CPU %d usage: %f\n", i, get_cpu_usage(&prev_stats[i], &current_stats[i]));
+        }
     }
 
     return 0;
