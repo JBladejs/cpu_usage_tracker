@@ -79,12 +79,16 @@ int main() {
     u16 core_count = get_core_count();
     CpuStats *prev_stats = malloc(sizeof(CpuStats) * core_count);
     CpuStats *current_stats = malloc(sizeof(CpuStats) * core_count);
-    get_stats(prev_stats, core_count);
-    sleep(1);
-    get_stats(current_stats, core_count);
-    prev_stats[1] = current_stats[0];
 
-    f64 usage = get_cpu_usage(prev_stats);
-    printf("%f\n", usage);
+    while (1) {
+        get_stats(prev_stats, core_count);
+        sleep(1);
+        get_stats(current_stats, core_count);
+        prev_stats[1] = current_stats[0];
+
+        f64 usage = get_cpu_usage(prev_stats);
+        printf("%f\n", usage);
+    }
+
     return 0;
 }
