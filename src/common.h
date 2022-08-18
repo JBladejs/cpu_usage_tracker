@@ -22,4 +22,7 @@ typedef int64_t u64;
 typedef float f32;
 typedef double f64;
 
+#define TRUE 1
+#define FALSE 0
+
 #endif //CPU_USAGE_TRACKER_COMMON_H
