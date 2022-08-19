@@ -20,7 +20,5 @@ typedef struct CpuStats {
 
 void *reader_init(void *arg);
 void reader_destroy();
-//u8 reader_load_file();
-//u8 reader_close_file();
 
 #endif //CPU_USAGE_TRACKER_READER_H
