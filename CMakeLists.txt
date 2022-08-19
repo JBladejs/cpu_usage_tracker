@@ -3,4 +3,7 @@ project(cpu_usage_tracker C)
 
 set(CMAKE_C_STANDARD 99)
 
-add_executable(cpu_usage_tracker src/main.c)
+file(GLOB HEADER_FILES "src/*.h")
+file(GLOB SOURCE_FILES "src/*.c")
+
+add_executable(cpu_usage_tracker ${SOURCE_FILES} ${HEADER_FILES})
