@@ -7,29 +7,10 @@
 #include <unistd.h>
 #include <stdlib.h>
 #include "common.h"
+#include "analyzer.h"
 
 static u8 running = FALSE;
 static FILE *fp;
-
-//TODO: move to a different file
-static f64 get_cpu_usage(CpuStats *prev, CpuStats *current) {
-    u64 prev_idle = prev->idle + prev->iowait;
-    u64 idle = current->idle + current->iowait;
-
-    u64 prev_non_idle = prev->user + prev->nice + prev->system + prev->irq + prev->softirq + prev->steal;
-    u64 non_idle = current->user + current->nice + current->system + current->irq + current->softirq + current->steal;
-
-    u64 prev_total = prev_idle + prev_non_idle;
-    u64 total = idle + non_idle;
-
-    u64 total_diff = total - prev_total;
-    u64 idle_diff = idle - prev_idle;
-
-    if (total_diff == 0) return 0.0f;
-    f64 usage = ((f64) (total_diff - idle_diff) / (f64) total_diff) * 100.0f;
-
-    return usage;
-}
 
 /* Core count includes one additional core which is the total of all cores */
 static u16 read_core_count() {
@@ -67,19 +48,16 @@ void *reader_init(void *arg) {
         reader_destroy();
     } else {
         u16 core_count = read_core_count();
+        analyzer_set_core_count(core_count);
 
-        CpuStats *prev_stats = malloc(sizeof(CpuStats) * core_count);
-        CpuStats *current_stats = malloc(sizeof(CpuStats) * core_count);
+        CpuStats stats[core_count];
 
         while (running) {
-            read_stats(prev_stats, core_count);
-            sleep(1);
-            read_stats(current_stats, core_count);
+            read_stats(stats, core_count);
+            //passing only total usage for now
+            analyzer_add_data(stats[0]);
 
-            system("clear");
-            for (int i = 0; i < core_count; ++i) {
-                printf("CPU %d usage: %f\n", i, get_cpu_usage(&prev_stats[i], &current_stats[i]));
-            }
+            sleep(1);
         }
     }
     reader_destroy();
