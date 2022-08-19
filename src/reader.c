@@ -33,6 +33,7 @@ static f64 get_cpu_usage(CpuStats *prev, CpuStats *current) {
 
 /* Core count includes one additional core which is the total of all cores */
 static u16 read_core_count() {
+    rewind(fp);
     s8 cpu_name[255];
     cpu_name[0] = 'c';
 
@@ -46,6 +47,8 @@ static u16 read_core_count() {
 }
 
 static void read_stats(CpuStats *stat, u16 core_count) {
+    fflush(fp);
+    rewind(fp);
     s64 user, nice, system, idle;
     for (int i = 0; i < core_count; ++i) {
         CpuStats *current = &stat[i];
@@ -69,11 +72,8 @@ void *reader_init(void *arg) {
         CpuStats *current_stats = malloc(sizeof(CpuStats) * core_count);
 
         while (running) {
-            rewind(fp);
             read_stats(prev_stats, core_count);
             sleep(1);
-            rewind(fp);
-            fflush(fp);
             read_stats(current_stats, core_count);
 
             system("clear");
