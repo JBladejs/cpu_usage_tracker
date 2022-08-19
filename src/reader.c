@@ -6,10 +6,11 @@
 #include <stdio.h>
 #include <unistd.h>
 #include <stdlib.h>
+#include <bits/types/sig_atomic_t.h>
 #include "common.h"
 #include "analyzer.h"
 
-static u8 running = FALSE;
+volatile static sig_atomic_t running = FALSE;
 static FILE *fp;
 
 /* Core count includes one additional core which is the total of all cores */

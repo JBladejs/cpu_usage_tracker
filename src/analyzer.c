@@ -5,6 +5,7 @@
 #include <unistd.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <bits/types/sig_atomic_t.h>
 #include "reader.h"
 #include "analyzer.h"
 #include "printer.h"
@@ -13,7 +14,7 @@
 static CpuStats prevStat;
 static CpuStats currStat;
 
-static u8 running = FALSE;
+volatile static sig_atomic_t running = FALSE;
 static u16 core_count = 1;
 
 static f32 get_cpu_usage(CpuStats *prev, CpuStats *current) {

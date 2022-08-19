@@ -5,9 +5,10 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
+#include <bits/types/sig_atomic_t.h>
 #include "printer.h"
 
-static u8 running = FALSE;
+volatile static sig_atomic_t running = FALSE;
 static f32 usage;
 
 void *printer_init(void *arg) {
