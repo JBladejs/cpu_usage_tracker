@@ -4,6 +4,7 @@
 
 #include <unistd.h>
 #include <stdio.h>
+#include <stdlib.h>
 #include "reader.h"
 #include "analyzer.h"
 
@@ -38,6 +39,7 @@ void *analyzer_init(void *arg) {
     while (running) {
         if (prevStat.user) {
             f32 usage = get_cpu_usage(&prevStat, &currStat);
+            system("clear");
             printf("CPU: %.2f%%\n", usage);
         }
         sleep(1);
