@@ -1,3 +1,7 @@
+//
+// Created by Alan Ćwiek on 8/19/22.
+//
+
 #include <pthread.h>
 #include <stdio.h>
 #include <signal.h>
