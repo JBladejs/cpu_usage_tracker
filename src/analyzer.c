@@ -55,12 +55,12 @@ void *analyzer_init(void *arg) {
 
 void analyzer_destroy() {
     running = FALSE;
-    queue_destroy(queue);
-    queue = NULL;
+//    queue_destroy(queue);
+//    queue = NULL;
 }
 
 void analyzer_add_data(struct CpuStats stat) {
-    queue_enqueue(queue, &stat);
+    if (running) queue_enqueue(queue, &stat);
 }
 
 void analyzer_set_core_count(u16 value) {

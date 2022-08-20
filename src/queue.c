@@ -6,8 +6,6 @@
 #include <stdlib.h>
 #include <string.h>
 #include "queue.h"
-#include "analyzer.h"
-
 
 struct Queue {
     u8 front, back, size;
