@@ -3,8 +3,6 @@
 //
 
 #include <unistd.h>
-#include <stdio.h>
-#include <stdlib.h>
 #include <bits/types/sig_atomic_t.h>
 #include "reader.h"
 #include "analyzer.h"
