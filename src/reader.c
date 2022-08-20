@@ -10,21 +10,21 @@
 #include "analyzer.h"
 
 volatile static sig_atomic_t running = FALSE;
-static struct StatReader *stat_reader = NULL;
+static struct Stats *stat_reader = NULL;
 
-void reader_set_stat_reader(struct StatReader *reader) {
+void reader_set_stat_reader(struct Stats *reader) {
     stat_reader = reader;
 }
 
 void *reader_init(void *arg) {
     running = TRUE;
 
-    u16 core_count = stat_reader_get_core_count(stat_reader);
+    u16 core_count = stats_get_core_count(stat_reader);
 
     struct CpuStats *stats = malloc(sizeof(struct CpuStats) * core_count);
 
     while (running) {
-        stat_reader_read(stat_reader, stats);
+        stats_read(stat_reader, stats);
         analyzer_add_data(stats);
         sleep(1);
     }
@@ -35,6 +35,6 @@ void *reader_init(void *arg) {
 
 void reader_destroy() {
     running = FALSE;
-    stat_reader_destroy(stat_reader);
+    stat_destroy(stat_reader);
     stat_reader = NULL;
 }

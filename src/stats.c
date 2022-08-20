@@ -4,14 +4,14 @@
 
 #include <bits/types/FILE.h>
 #include <malloc.h>
-#include "stat_reader.h"
+#include "stats.h"
 
-struct StatReader {
+struct Stats {
     FILE *file;
     u16 core_count;
 };
 
-static u16 read_core_count(struct StatReader *reader) {
+static u16 read_core_count(struct Stats *reader) {
     rewind(reader->file);
     s8 cpu_name[255];
     cpu_name[0] = 'c';
@@ -25,8 +25,8 @@ static u16 read_core_count(struct StatReader *reader) {
     return --core_count;
 }
 
-struct StatReader *stat_reader_create(char *file_name) {
-    struct StatReader *reader = malloc(sizeof(struct StatReader));
+struct Stats *stats_initialize(char *file_name) {
+    struct Stats *reader = malloc(sizeof(struct Stats));
     reader->file = fopen(file_name, "r");
     if (reader->file == NULL) return NULL;
 
@@ -34,11 +34,11 @@ struct StatReader *stat_reader_create(char *file_name) {
     return reader;
 }
 
-u16 stat_reader_get_core_count(struct StatReader *reader) {
+u16 stats_get_core_count(struct Stats *reader) {
     return reader->core_count;
 }
 
-void stat_reader_read(struct StatReader *reader, struct CpuStats *stat) {
+void stats_read(struct Stats *reader, struct CpuStats *stat) {
     fflush(reader->file);
     rewind(reader->file);
     s64 user, nice, system, idle;
@@ -50,7 +50,7 @@ void stat_reader_read(struct StatReader *reader, struct CpuStats *stat) {
     }
 }
 
-void stat_reader_destroy(struct StatReader *reader) {
+void stat_destroy(struct Stats *reader) {
     if (reader->file != NULL) fclose(reader->file);
     free(reader);
 }

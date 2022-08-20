@@ -9,7 +9,7 @@
 #include <stdlib.h>
 #include "analyzer.h"
 #include "printer.h"
-#include "stat_reader.h"
+#include "stats.h"
 
 void terminate(int signum) {
     reader_destroy();
@@ -24,12 +24,12 @@ int main() {
     sigaction(SIGTERM, &action, NULL);
     sigaction(SIGINT, &action, NULL);
 
-    struct StatReader *reader = stat_reader_create("/proc/stat");
+    struct Stats *reader = stats_initialize("/proc/stat");
     if (reader == NULL) {
         //TODO: alert watchdog
         return 1;
     }
-    u16 core_count = stat_reader_get_core_count(reader);
+    u16 core_count = stats_get_core_count(reader);
 
     pthread_t reader_thread;
     pthread_t analyzer_thread;
