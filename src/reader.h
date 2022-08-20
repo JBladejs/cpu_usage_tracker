@@ -6,18 +6,9 @@
 #define CPU_USAGE_TRACKER_READER_H
 
 #include "common.h"
+#include "stat_reader.h"
 
-struct CpuStats {
-    u64 user;
-    u64 nice;
-    u64 system;
-    u64 idle;
-    u64 iowait;
-    u64 irq;
-    u64 softirq;
-    u64 steal;
-};
-
+void reader_set_stat_reader(struct StatReader *reader);
 void *reader_init(void *arg);
 void reader_destroy();
 

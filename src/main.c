@@ -9,6 +9,7 @@
 #include <stdlib.h>
 #include "analyzer.h"
 #include "printer.h"
+#include "stat_reader.h"
 
 void terminate(int signum) {
     reader_destroy();
@@ -23,23 +24,32 @@ int main() {
     sigaction(SIGTERM, &action, NULL);
     sigaction(SIGINT, &action, NULL);
 
+    struct StatReader *reader = stat_reader_create("/proc/stat");
+    if (reader == NULL) {
+        //TODO: alert watchdog
+        return 1;
+    }
+    u16 core_count = stat_reader_get_core_count(reader);
+
     pthread_t reader_thread;
     pthread_t analyzer_thread;
     pthread_t printer_thread;
-    //fixed for now
-    printer_set_core_count(13);
+
+    printer_set_core_count(core_count);
     u8 result = pthread_create(&printer_thread, NULL, printer_init, NULL);
     if (result != 0) {
         perror("Could not create a thread!");
         return 1;
     }
-    //fixed for now
-    analyzer_set_core_count(13);
+
+    analyzer_set_core_count(core_count);
     result = pthread_create(&analyzer_thread, NULL, analyzer_init, NULL);
     if (result != 0) {
         perror("Could not create a thread!");
         return 1;
     }
+
+    reader_set_stat_reader(reader);
     result = pthread_create(&reader_thread, NULL, reader_init, NULL);
     if (result != 0) {
         perror("Could not create a thread!");
