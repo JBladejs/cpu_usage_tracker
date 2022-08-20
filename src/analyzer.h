@@ -8,7 +8,7 @@
 #include "reader.h"
 
 void *analyzer_init(void *arg);
-void analyzer_add_data(CpuStats stat);
+void analyzer_add_data(struct CpuStats stat);
 void analyzer_set_core_count(u16 value);
 void analyzer_destroy();
 

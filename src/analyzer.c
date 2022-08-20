@@ -11,13 +11,13 @@
 #include "printer.h"
 
 //Very naive and incorrect way for now
-static CpuStats prevStat;
-static CpuStats currStat;
+static struct CpuStats prevStat;
+static struct CpuStats currStat;
 
 volatile static sig_atomic_t running = FALSE;
 static u16 core_count = 1;
 
-static f32 get_cpu_usage(CpuStats *prev, CpuStats *current) {
+static f32 get_cpu_usage(struct CpuStats *prev, struct CpuStats *current) {
     u64 prev_idle = prev->idle + prev->iowait;
     u64 idle = current->idle + current->iowait;
 
@@ -53,7 +53,7 @@ void analyzer_destroy() {
 }
 
 //Very naive and incorrect way for now
-void analyzer_add_data(CpuStats stat) {
+void analyzer_add_data(struct CpuStats stat) {
     prevStat = currStat;
     currStat = stat;
 }

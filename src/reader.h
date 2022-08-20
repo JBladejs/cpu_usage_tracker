@@ -7,7 +7,7 @@
 
 #include "common.h"
 
-typedef struct CpuStats {
+struct CpuStats {
     u64 user;
     u64 nice;
     u64 system;
@@ -16,7 +16,7 @@ typedef struct CpuStats {
     u64 irq;
     u64 softirq;
     u64 steal;
-} CpuStats;
+};
 
 void *reader_init(void *arg);
 void reader_destroy();
