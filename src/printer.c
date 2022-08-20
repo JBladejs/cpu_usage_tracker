@@ -21,7 +21,11 @@ void *printer_init(void *arg) {
         if (!queue_is_empty(queue)) {
             f32 *usage = queue_dequeue(queue);
             for (int i = 0; i < core_count; ++i) {
-                printf("Core %d: %.2f%%\n", i, usage[i]);
+                if (i == 0) {
+                    printf("Total CPU usage: %.2f%%\n", usage[0]);
+                } else {
+                    printf("Core %d usage: %.2f%%\n", i, usage[i]);
+                }
             }
             free(usage);
         }
