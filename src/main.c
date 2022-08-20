@@ -26,11 +26,15 @@ int main() {
     pthread_t reader_thread;
     pthread_t analyzer_thread;
     pthread_t printer_thread;
+    //fixed for now
+    printer_set_core_count(13);
     u8 result = pthread_create(&printer_thread, NULL, printer_init, NULL);
     if (result != 0) {
         perror("Could not create a thread!");
         return 1;
     }
+    //fixed for now
+    analyzer_set_core_count(13);
     result = pthread_create(&analyzer_thread, NULL, analyzer_init, NULL);
     if (result != 0) {
         perror("Could not create a thread!");

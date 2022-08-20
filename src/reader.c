@@ -6,6 +6,7 @@
 #include <stdio.h>
 #include <unistd.h>
 #include <bits/types/sig_atomic_t.h>
+#include <malloc.h>
 #include "common.h"
 #include "analyzer.h"
 
@@ -48,17 +49,18 @@ void *reader_init(void *arg) {
         reader_destroy();
     } else {
         u16 core_count = read_core_count();
-        analyzer_set_core_count(core_count);
+//        analyzer_set_core_count(core_count);
 
-        struct CpuStats stats[core_count];
+        struct CpuStats *stats = malloc(sizeof(struct CpuStats) * core_count);
 
         while (running) {
             read_stats(stats, core_count);
             //passing only total usage for now
-            analyzer_add_data(stats[0]);
+            analyzer_add_data(stats);
 
             sleep(1);
         }
+        free(stats);
     }
     reader_destroy();
 }

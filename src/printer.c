@@ -9,22 +9,34 @@
 #include "printer.h"
 
 volatile static sig_atomic_t running = FALSE;
-static f32 usage;
+static f32 *usage = NULL;
+static u16 core_count = 1;
 
 void *printer_init(void *arg) {
     running = TRUE;
     while (running) {
         system("clear");
-        printf("CPU: %.2f%%\n", usage);
+        if (usage != NULL) {
+            for (int i = 0; i < core_count; ++i) {
+                printf("Core %d: %.2f%%\n", i, usage[i]);
+            }
+            //TODO: free memory
+        }
         sleep(1);
     }
     printer_destroy();
 }
 
-void printer_add_data(f32 value) {
-    usage = value;
+void printer_add_data(f32 *values) {
+    usage = values;
+}
+
+void printer_set_core_count(u16 value) {
+    core_count = value;
 }
 
 void printer_destroy() {
     running = FALSE;
 }
+
+

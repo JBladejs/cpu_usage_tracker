@@ -46,11 +46,14 @@ static void destroy() {
 
 void *analyzer_init(void *arg) {
     running = TRUE;
-    queue = QUEUE_NEW(struct CpuStats, 255);
+    queue = queue_create(255, sizeof(struct CpuStats) * core_count);
     while (running) {
         if (prevStat != NULL) {
             struct CpuStats *current = queue_dequeue(queue);
-            f32 usage = get_cpu_usage(prevStat, current);
+            f32 *usage = malloc(sizeof (f32) * core_count);
+            for (int i = 0; i < core_count; ++i) {
+                usage[i] = get_cpu_usage(&prevStat[i], &current[i]);
+            }
             printer_add_data(usage);
             free(prevStat);
             prevStat = current;
@@ -62,8 +65,8 @@ void *analyzer_init(void *arg) {
     destroy();
 }
 
-void analyzer_add_data(struct CpuStats stat) {
-    queue_enqueue(queue, &stat);
+void analyzer_add_data(struct CpuStats *stat) {
+    queue_enqueue(queue, stat);
 }
 
 void analyzer_set_core_count(u16 value) {

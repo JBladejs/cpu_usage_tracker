@@ -8,7 +8,8 @@
 #include "common.h"
 
 void *printer_init(void *arg);
-void printer_add_data(f32 value);
+void printer_add_data(f32 *value);
+void printer_set_core_count(u16 value);
 void printer_destroy();
 
 #endif //CPU_USAGE_TRACKER_PRINTER_H
