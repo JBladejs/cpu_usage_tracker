@@ -4,13 +4,14 @@
 
 #include <unistd.h>
 #include <bits/types/sig_atomic_t.h>
+#include <malloc.h>
 #include "reader.h"
 #include "analyzer.h"
 #include "printer.h"
+#include "queue.h"
 
-//Very naive and incorrect way for now
-static struct CpuStats prevStat;
-static struct CpuStats currStat;
+static struct CpuStats *prevStat = NULL;
+static struct Queue *queue = NULL;
 
 volatile static sig_atomic_t running = FALSE;
 static u16 core_count = 1;
@@ -36,10 +37,16 @@ static f32 get_cpu_usage(struct CpuStats *prev, struct CpuStats *current) {
 
 void *analyzer_init(void *arg) {
     running = TRUE;
+    queue = QUEUE_NEW(struct CpuStats, 255);
     while (running) {
-        if (prevStat.user) {
-            f32 usage = get_cpu_usage(&prevStat, &currStat);
+        if (prevStat != NULL) {
+            struct CpuStats *current = queue_dequeue(queue);
+            f32 usage = get_cpu_usage(prevStat, current);
             printer_add_data(usage);
+            free(prevStat);
+            prevStat = current;
+        } else {
+            prevStat = queue_dequeue(queue);
         }
         sleep(1);
     }
@@ -48,12 +55,12 @@ void *analyzer_init(void *arg) {
 
 void analyzer_destroy() {
     running = FALSE;
+    queue_destroy(queue);
+    queue = NULL;
 }
 
-//Very naive and incorrect way for now
 void analyzer_add_data(struct CpuStats stat) {
-    prevStat = currStat;
-    currStat = stat;
+    queue_enqueue(queue, &stat);
 }
 
 void analyzer_set_core_count(u16 value) {
