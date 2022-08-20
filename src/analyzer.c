@@ -49,6 +49,7 @@ void *analyzer_init(void *arg) {
     queue = queue_create(255, sizeof(struct CpuStats) * core_count);
     while (running) {
         if (prevStat != NULL) {
+            if (queue_is_empty(queue)) continue;
             struct CpuStats *current = queue_dequeue(queue);
             f32 *usage = malloc(sizeof (f32) * core_count);
             for (int i = 0; i < core_count; ++i) {
