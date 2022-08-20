@@ -3,6 +3,7 @@
 //
 
 #include <stddef.h>
+#include <malloc.h>
 #include "queue.h"
 
 struct Queue {
@@ -12,24 +13,28 @@ struct Queue {
     void* data;
 };
 
-struct Queue create_queue(u8 capacity) {
-    struct Queue result;
-    return result;
+struct Queue *queue_create(u8 capacity, size_t size){
+    struct Queue* queue = (struct Queue*) malloc(sizeof(struct Queue));
+    queue->capacity = capacity;
+    queue->element_size = size;
+    queue->front = queue->size = 0;
+    queue->back = capacity - 1;
+    queue->data = malloc(capacity * size);
 }
 
-u8 is_queue_full(struct Queue queue) {
+u8 queue_is_full(struct Queue queue) {
     return 0;
 }
 
-u8 is_queue_empty(struct Queue queue) {
+u8 queue_is_empty(struct Queue queue) {
     return 0;
 }
 
-void enqueue(struct Queue *queue, void *data) {
+void queue_enqueue(struct Queue *queue, void *data) {
 
 }
 
-void *dequeue(struct Queue *queue) {
+void *queue_dequeue(struct Queue *queue) {
     return NULL;
 }
 
