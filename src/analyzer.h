@@ -11,6 +11,6 @@ void *analyzer_init(void *arg);
 struct Queue *analyzer_get_queue();
 void analyzer_add_data(struct CpuStats stat);
 void analyzer_set_core_count(u16 value);
-void analyzer_destroy();
+void analyzer_stop();
 
 #endif //CPU_USAGE_TRACKER_ANALYZER_H

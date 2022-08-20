@@ -8,7 +8,7 @@
 
 void terminate(int signum) {
     reader_destroy();
-    analyzer_destroy();
+    analyzer_stop();
     printer_destroy();
 }
 

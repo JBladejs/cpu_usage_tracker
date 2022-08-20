@@ -35,6 +35,15 @@ static f32 get_cpu_usage(struct CpuStats *prev, struct CpuStats *current) {
     return usage;
 }
 
+void analyzer_stop() {
+    running = FALSE;
+}
+
+static void destroy() {
+    queue_destroy(queue);
+    queue = NULL;
+}
+
 void *analyzer_init(void *arg) {
     running = TRUE;
     queue = QUEUE_NEW(struct CpuStats, 255);
@@ -50,13 +59,7 @@ void *analyzer_init(void *arg) {
         }
         sleep(1);
     }
-    analyzer_destroy();
-}
-
-void analyzer_destroy() {
-    running = FALSE;
-//    queue_destroy(queue);
-//    queue = NULL;
+    destroy();
 }
 
 void analyzer_add_data(struct CpuStats stat) {
