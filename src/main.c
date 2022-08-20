@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include <signal.h>
 #include <string.h>
+#include <stdlib.h>
 #include "analyzer.h"
 #include "printer.h"
 
@@ -16,6 +17,7 @@ int main() {
     memset (&action, 0, sizeof (struct sigaction));
     action.sa_handler = &terminate;
     sigaction(SIGTERM, &action, NULL);
+    sigaction(SIGINT, &action, NULL);
 
     pthread_t reader_thread;
     pthread_t analyzer_thread;
@@ -38,6 +40,8 @@ int main() {
     pthread_join(reader_thread, NULL);
     pthread_join(analyzer_thread, NULL);
     pthread_join(printer_thread, NULL);
+
+    system("clear");
     printf("Program finished!\n");
     return 0;
 }
