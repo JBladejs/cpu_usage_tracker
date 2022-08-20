@@ -63,7 +63,7 @@ void *analyzer_init(void *arg) {
 }
 
 void analyzer_add_data(struct CpuStats stat) {
-    if (running) queue_enqueue(queue, &stat);
+    queue_enqueue(queue, &stat);
 }
 
 void analyzer_set_core_count(u16 value) {

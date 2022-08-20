@@ -26,7 +26,7 @@ int main() {
     pthread_t reader_thread;
     pthread_t analyzer_thread;
     pthread_t printer_thread;
-    u8 result = pthread_create(&reader_thread, NULL, reader_init, NULL);
+    u8 result = pthread_create(&printer_thread, NULL, printer_init, NULL);
     if (result != 0) {
         perror("Could not create a thread!");
         return 1;
@@ -36,7 +36,7 @@ int main() {
         perror("Could not create a thread!");
         return 1;
     }
-    result = pthread_create(&printer_thread, NULL, printer_init, NULL);
+    result = pthread_create(&reader_thread, NULL, reader_init, NULL);
     if (result != 0) {
         perror("Could not create a thread!");
         return 1;
