@@ -3,7 +3,8 @@
 //
 
 #include <stddef.h>
-#include <malloc.h>
+#include <stdlib.h>
+#include <string.h>
 #include "queue.h"
 
 struct Queue {
@@ -22,19 +23,36 @@ struct Queue *queue_create(u8 capacity, size_t size){
     queue->data = malloc(capacity * size);
 }
 
-u8 queue_is_full(struct Queue queue) {
-    return 0;
+u8 queue_is_full(struct Queue* queue) {
+    return queue->size == queue->capacity;
 }
 
-u8 queue_is_empty(struct Queue queue) {
-    return 0;
+u8 queue_is_empty(struct Queue* queue) {
+    return queue->size == 0;
 }
 
-void queue_enqueue(struct Queue *queue, void *data) {
-
+void queue_enqueue(struct Queue *queue, void* data) {
+    if (queue_is_full(queue)) {
+        return;
+    }
+    queue->back = (queue->back + 1) % queue->capacity;
+    queue->size++;
+    memcpy(queue->data + queue->back * queue->element_size, data, queue->element_size);
 }
 
 void *queue_dequeue(struct Queue *queue) {
-    return NULL;
+    if (queue_is_empty(queue)) {
+        return NULL;
+    }
+    void* data = malloc(queue->element_size);
+    memcpy(data, queue->data + queue->front * queue->element_size, queue->element_size);
+    queue->front = (queue->front + 1) % queue->capacity;
+    queue->size--;
+    return data;
+}
+
+void queue_destroy(struct Queue *queue) {
+    free(queue->data);
+    free(queue);
 }
 
