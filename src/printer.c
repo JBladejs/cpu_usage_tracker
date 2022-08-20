@@ -8,12 +8,14 @@
 #include <bits/types/sig_atomic_t.h>
 #include "printer.h"
 #include "queue.h"
+#include "thread.h"
 
 volatile static sig_atomic_t running = FALSE;
 static struct Queue *queue = NULL;
 static u16 core_count = 1;
+static struct Thread *thread = NULL;
 
-void *printer_init(void *arg) {
+static void *printer_thread_routine(void *arg) {
     running = TRUE;
     queue = queue_create(255, core_count * sizeof (f32));
     while (running) {
@@ -32,6 +34,14 @@ void *printer_init(void *arg) {
         sleep(1);
     }
     printer_destroy();
+}
+
+struct Thread *printer_get_thread() {
+    return thread;
+}
+
+void printer_init() {
+    thread = thread_create(printer_thread_routine, printer_destroy);
 }
 
 void printer_add_data(f32 *values) {

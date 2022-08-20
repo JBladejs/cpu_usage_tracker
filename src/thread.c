@@ -2,7 +2,6 @@
 // Created by Alan Ćwiek on 8/20/22.
 //
 
-#include <bits/pthreadtypes.h>
 #include <malloc.h>
 #include <pthread.h>
 #include <stdlib.h>

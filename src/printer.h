@@ -7,7 +7,8 @@
 
 #include "common.h"
 
-void *printer_init(void *arg);
+void printer_init();
+struct Thread *printer_get_thread();
 void printer_add_data(f32 *value);
 void printer_set_core_count(u16 value);
 void printer_destroy();

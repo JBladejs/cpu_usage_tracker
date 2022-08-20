@@ -10,6 +10,7 @@
 #include "analyzer.h"
 #include "printer.h"
 #include "stats.h"
+#include "thread.h"
 
 void terminate(int signum) {
     reader_destroy();
@@ -33,17 +34,13 @@ int main() {
 
     pthread_t reader_thread;
     pthread_t analyzer_thread;
-    pthread_t printer_thread;
 
+    printer_init();
     printer_set_core_count(core_count);
-    u8 result = pthread_create(&printer_thread, NULL, printer_init, NULL);
-    if (result != 0) {
-        perror("Could not create a thread!");
-        return 1;
-    }
+    thread_run(printer_get_thread(), NULL);
 
     analyzer_set_core_count(core_count);
-    result = pthread_create(&analyzer_thread, NULL, analyzer_init, NULL);
+    u8 result = pthread_create(&analyzer_thread, NULL, analyzer_init, NULL);
     if (result != 0) {
         perror("Could not create a thread!");
         return 1;
@@ -57,7 +54,7 @@ int main() {
     }
     pthread_join(reader_thread, NULL);
     pthread_join(analyzer_thread, NULL);
-    pthread_join(printer_thread, NULL);
+    thread_join(printer_get_thread());
 
     system("clear");
     printf("Program finished!\n");
