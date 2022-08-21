@@ -4,6 +4,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <unistd.h>
 #include "logger.h"
 #include "../file_io/logfile.h"
 #include "../queue.h"
@@ -22,6 +23,7 @@ static void *logger_thread_routine(void *arg) {
             logfile_write(logfile, message);
             free(message);
         }
+        sleep(1);
     }
     logger_log("Ending program...");
     logfile_destroy(logfile);

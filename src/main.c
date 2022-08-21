@@ -6,6 +6,7 @@
 #include <signal.h>
 #include <string.h>
 #include <stdlib.h>
+#include <caca_conio.h>
 #include "threads/analyzer.h"
 #include "threads/printer.h"
 #include "file_io/statfile.h"
@@ -14,10 +15,12 @@
 #include "threads/logger.h"
 
 void terminate(int signum) {
+    logger_log("Signal received, terminating program...");
     thread_stop(watchdog_get_thread());
     thread_stop(reader_get_thread());
     thread_stop(analyzer_get_thread());
     thread_stop(printer_get_thread());
+    sleep(1);
     thread_stop(logger_get_thread());
 }
 
