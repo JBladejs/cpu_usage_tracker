@@ -42,16 +42,14 @@ struct Thread *printer_get_thread() {
     return thread;
 }
 
-void printer_init() {
+void printer_init(u16 cores) {
+    core_count = cores;
     thread = thread_create(printer_thread_routine);
+    thread_run(thread, NULL);
 }
 
 void printer_add_data(f32 *values) {
     queue_enqueue(queue, values);
-}
-
-void printer_set_core_count(u16 value) {
-    core_count = value;
 }
 
 

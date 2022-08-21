@@ -8,8 +8,7 @@
 #include "../common.h"
 #include "../statfile.h"
 
-void reader_set_stat_reader(struct Statfile *reader);
-void *reader_init(void *arg);
-void reader_stop();
+void reader_init(struct Statfile *statfile);
+struct Thread *reader_get_thread();
 
 #endif //CPU_USAGE_TRACKER_READER_H

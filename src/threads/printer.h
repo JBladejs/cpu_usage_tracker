@@ -7,9 +7,8 @@
 
 #include "../common.h"
 
-void printer_init();
+void printer_init(u16 cores);
 struct Thread *printer_get_thread();
 void printer_add_data(f32 *value);
-void printer_set_core_count(u16 value);
 
 #endif //CPU_USAGE_TRACKER_PRINTER_H

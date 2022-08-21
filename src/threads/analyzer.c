@@ -3,17 +3,17 @@
 //
 
 #include <unistd.h>
-#include <bits/types/sig_atomic_t.h>
 #include <malloc.h>
 #include "reader.h"
 #include "analyzer.h"
 #include "printer.h"
 #include "../queue.h"
+#include "thread.h"
 
 static struct CpuStats *prevStat = NULL;
 static struct Queue *queue = NULL;
+static struct Thread *thread = NULL;
 
-volatile static sig_atomic_t running = FALSE;
 static u16 core_count = 1;
 
 static f32 get_cpu_usage(struct CpuStats *prev, struct CpuStats *current) {
@@ -35,19 +35,14 @@ static f32 get_cpu_usage(struct CpuStats *prev, struct CpuStats *current) {
     return usage;
 }
 
-void analyzer_stop() {
-    running = FALSE;
-}
-
 static void destroy() {
     queue_destroy(queue);
     queue = NULL;
 }
 
-void *analyzer_init(void *arg) {
-    running = TRUE;
+static void *analyzer_thread_routine(void *arg) {
     queue = queue_create(255, sizeof(struct CpuStats) * core_count);
-    while (running) {
+    while (thread_is_running(thread)) {
         if (prevStat != NULL) {
             if (queue_is_empty(queue)) continue;
             struct CpuStats *current = queue_dequeue(queue);
@@ -70,6 +65,12 @@ void analyzer_add_data(struct CpuStats *stat) {
     queue_enqueue(queue, stat);
 }
 
-void analyzer_set_core_count(u16 value) {
-    core_count = value;
+struct Thread *analyzer_get_thread() {
+    return thread;
+}
+
+void analyzer_init(u16 cores) {
+    core_count = cores;
+    thread = thread_create(analyzer_thread_routine);
+    thread_run(thread, NULL);
 }

@@ -8,7 +8,7 @@
 #include "../common.h"
 #include <bits/types/sig_atomic_t.h>
 
-struct thread;
+struct Thread;
 struct Thread *thread_create(void *(*start)(void * arg));
 void thread_run(struct Thread *thread, void *arg);
 void thread_join(struct Thread *thread);

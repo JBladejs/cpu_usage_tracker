@@ -4,33 +4,32 @@
 
 #include "reader.h"
 #include <unistd.h>
-#include <bits/types/sig_atomic_t.h>
 #include <malloc.h>
-#include "../common.h"
 #include "analyzer.h"
+#include "thread.h"
 
-volatile static sig_atomic_t running = FALSE;
 static struct Statfile *stat_reader = NULL;
+static struct Thread *thread = NULL;
 
 void reader_set_stat_reader(struct Statfile *reader) {
     stat_reader = reader;
 }
 
+struct Thread *reader_get_thread() {
+    return thread;
+}
+
 static void reader_destroy() {
-    running = FALSE;
     statfile_destroy(stat_reader);
     stat_reader = NULL;
 }
 
-
-void *reader_init(void *arg) {
-    running = TRUE;
-
+static void *reader_thread_routine(void *arg) {
     u16 core_count = statfile_get_core_count(stat_reader);
 
     struct CpuStats *stats = malloc(sizeof(struct CpuStats) * core_count);
 
-    while (running) {
+    while (thread_is_running(thread)) {
         statfile_read(stat_reader, stats);
         analyzer_add_data(stats);
         sleep(1);
@@ -39,6 +38,8 @@ void *reader_init(void *arg) {
     reader_destroy();
 }
 
-void reader_stop() {
-    running = FALSE;
+void reader_init(struct Statfile *statfile) {
+    stat_reader = statfile;
+    thread = thread_create(reader_thread_routine);
+    thread_run(thread, NULL);
 }
