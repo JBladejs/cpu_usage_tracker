@@ -5,7 +5,6 @@
 #include <malloc.h>
 #include <pthread.h>
 #include <stdlib.h>
-#include <bits/types/sig_atomic_t.h>
 #include "thread.h"
 #include "../common.h"
 
@@ -36,4 +35,8 @@ void thread_join(struct Thread *thread) {
 
 void thread_stop(struct Thread *thread) {
     thread->running = FALSE;
+}
+
+sig_atomic_t thread_is_running(struct Thread *thread) {
+    return thread->running;
 }

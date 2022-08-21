@@ -5,26 +5,22 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
-#include <bits/types/sig_atomic_t.h>
 #include "printer.h"
 #include "../queue.h"
 #include "thread.h"
 
-volatile static sig_atomic_t running = FALSE;
 static struct Queue *queue = NULL;
 static u16 core_count = 1;
 static struct Thread *thread = NULL;
 
 static void printer_destroy() {
-    running = FALSE;
     free(queue);
     queue = NULL;
 }
 
 static void *printer_thread_routine(void *arg) {
-    running = TRUE;
     queue = queue_create(255, core_count * sizeof (f32));
-    while (running) {
+    while (thread_is_running(thread)) {
         system("clear");
         if (!queue_is_empty(queue)) {
             f32 *usage = queue_dequeue(queue);
@@ -56,10 +52,6 @@ void printer_add_data(f32 *values) {
 
 void printer_set_core_count(u16 value) {
     core_count = value;
-}
-
-void printer_stop() {
-    running = FALSE;
 }
 
 

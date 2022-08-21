@@ -16,7 +16,7 @@
 void terminate(int signum) {
     reader_stop();
     analyzer_stop();
-    printer_stop();
+    thread_stop(printer_get_thread());
 }
 
 int main() {
