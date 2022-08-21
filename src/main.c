@@ -6,28 +6,18 @@
 #include <signal.h>
 #include <string.h>
 #include <stdlib.h>
-#include <unistd.h>
 #include "threads/analyzer.h"
 #include "threads/printer.h"
 #include "file_io/statfile.h"
 #include "threads/watchdog.h"
 #include "threads/thread.h"
 #include "threads/logger.h"
-
-void terminate(int signum) {
-    logger_log("Signal received, terminating program...");
-    thread_stop(watchdog_get_thread());
-    thread_stop(reader_get_thread());
-    thread_stop(analyzer_get_thread());
-    thread_stop(printer_get_thread());
-    sleep(1);
-    thread_stop(logger_get_thread());
-}
+#include "program.h"
 
 int main() {
     struct sigaction action;
     memset (&action, 0, sizeof (struct sigaction));
-    action.sa_handler = &terminate;
+    action.sa_handler = &program_terminate;
     sigaction(SIGTERM, &action, NULL);
     sigaction(SIGINT, &action, NULL);
 
@@ -57,7 +47,5 @@ int main() {
     thread_join(printer_get_thread());
     thread_join(logger_get_thread());
 
-    system("clear");
-    printf("Program finished!\n");
     return 0;
 }
