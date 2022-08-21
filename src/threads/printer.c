@@ -21,6 +21,7 @@ static void printer_destroy() {
 static void *printer_thread_routine(void *arg) {
     queue = queue_create(255, core_count * sizeof (f32));
     while (thread_is_running(thread)) {
+        thread_time(thread, TRUE);
         system("clear");
         if (!queue_is_empty(queue)) {
             f32 *usage = queue_dequeue(queue);

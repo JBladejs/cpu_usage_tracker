@@ -30,6 +30,7 @@ static void *reader_thread_routine(void *arg) {
     struct CpuStats *stats = malloc(sizeof(struct CpuStats) * core_count);
 
     while (thread_is_running(thread)) {
+        thread_time(thread, TRUE);
         statfile_read(stat_reader, stats);
         analyzer_add_data(stats);
         sleep(1);

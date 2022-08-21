@@ -7,12 +7,6 @@
 #include <stdlib.h>
 #include "thread.h"
 
-struct Thread {
-    pthread_t thread_id;
-    volatile sig_atomic_t running;
-    void *(*start_routine)(void *arg);
-};
-
 struct Thread *thread_create(void *(*start)(void * arg)) {
     pthread_t thread_id;
     struct Thread *thread = malloc(sizeof(struct Thread));
@@ -40,4 +34,20 @@ void thread_stop(struct Thread *thread) {
 
 sig_atomic_t thread_is_running(struct Thread *thread) {
     return thread->running;
+}
+
+u8 thread_get_timer(struct Thread *thread) {
+    return thread->timer;
+}
+
+void thread_time(struct Thread *thread, u8 reset) {
+    if (reset) {
+        thread->timer = 0;
+    } else {
+        thread->timer++;
+    }
+}
+
+size_t thread_size() {
+    return sizeof (struct Thread);
 }

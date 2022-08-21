@@ -25,6 +25,7 @@ static void destroy() {
 static void *analyzer_thread_routine(void *arg) {
     queue = queue_create(255, sizeof(struct CpuStats) * core_count);
     while (thread_is_running(thread)) {
+        thread_time(thread, TRUE);
         if (prevStat != NULL) {
             if (queue_is_empty(queue)) continue;
             struct CpuStats *current = queue_dequeue(queue);
