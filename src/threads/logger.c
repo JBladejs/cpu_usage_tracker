@@ -27,7 +27,7 @@ static void *logger_thread_routine(void *arg) {
 }
 
 void logger_init() {
-    logfile = logfile_init("test.log");
+    logfile = logfile_init("cpu_usage_tracker.log");
     if (logfile == NULL) {
         perror("Error: could not initialize logfile\n");
         //TODO: terminate properly
