@@ -6,8 +6,9 @@
 #define CPU_USAGE_TRACKER_THREAD_H
 
 struct thread;
-struct Thread *thread_create(void *(*start)(void * arg), void (*destroy)());
+struct Thread *thread_create(void *(*start)(void * arg));
 void thread_run(struct Thread *thread, void *arg);
 void thread_join(struct Thread *thread);
+void thread_stop(struct Thread *thread);
 
 #endif //CPU_USAGE_TRACKER_THREAD_H

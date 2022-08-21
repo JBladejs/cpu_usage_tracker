@@ -47,7 +47,7 @@ struct Thread *printer_get_thread() {
 }
 
 void printer_init() {
-    thread = thread_create(printer_thread_routine, printer_destroy);
+    thread = thread_create(printer_thread_routine);
 }
 
 void printer_add_data(f32 *values) {
