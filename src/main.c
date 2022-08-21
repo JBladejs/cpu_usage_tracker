@@ -10,7 +10,7 @@
 #include <unistd.h>
 #include "analyzer.h"
 #include "printer.h"
-#include "stats.h"
+#include "statfile.h"
 #include "thread.h"
 
 void terminate(int signum) {
@@ -26,12 +26,12 @@ int main() {
     sigaction(SIGTERM, &action, NULL);
     sigaction(SIGINT, &action, NULL);
 
-    struct Stats *reader = stats_initialize("/proc/stat");
+    struct Statfile *reader = statfile_initialize("/proc/stat");
     if (reader == NULL) {
         //TODO: alert watchdog
         return 1;
     }
-    u16 core_count = stats_get_core_count(reader);
+    u16 core_count = statfile_get_core_count(reader);
 
     pthread_t reader_thread;
     pthread_t analyzer_thread;

@@ -6,9 +6,9 @@
 #define CPU_USAGE_TRACKER_READER_H
 
 #include "common.h"
-#include "stats.h"
+#include "statfile.h"
 
-void reader_set_stat_reader(struct Stats *reader);
+void reader_set_stat_reader(struct Statfile *reader);
 void *reader_init(void *arg);
 void reader_stop();
 
