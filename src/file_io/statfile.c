@@ -17,7 +17,7 @@ static u16 read_core_count(struct Statfile *reader) {
     s8 cpu_name[255];
     cpu_name[0] = 'c';
 
-    u16 core_count;
+    u16 core_count = 0;
     while (cpu_name[0] == 'c') {
         core_count++;
         fscanf(reader->file, "%s %*ld %*ld %*ld %*ld %*ld %*ld %*ld %*ld %*ld %*ld", cpu_name);
