@@ -7,7 +7,7 @@
 #include <unistd.h>
 #include <bits/types/sig_atomic_t.h>
 #include "printer.h"
-#include "queue.h"
+#include "../queue.h"
 #include "thread.h"
 
 volatile static sig_atomic_t running = FALSE;

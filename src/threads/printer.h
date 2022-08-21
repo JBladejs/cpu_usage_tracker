@@ -5,7 +5,7 @@
 #ifndef CPU_USAGE_TRACKER_PRINTER_H
 #define CPU_USAGE_TRACKER_PRINTER_H
 
-#include "common.h"
+#include "../common.h"
 
 void printer_init();
 struct Thread *printer_get_thread();

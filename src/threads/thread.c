@@ -6,7 +6,7 @@
 #include <pthread.h>
 #include <stdlib.h>
 #include "thread.h"
-#include "common.h"
+#include "../common.h"
 
 struct Thread {
     pthread_t thread;

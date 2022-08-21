@@ -8,10 +8,10 @@
 #include <string.h>
 #include <stdlib.h>
 #include <unistd.h>
-#include "analyzer.h"
-#include "printer.h"
+#include "threads/analyzer.h"
+#include "threads/printer.h"
 #include "statfile.h"
-#include "thread.h"
+#include "threads/thread.h"
 
 void terminate(int signum) {
     reader_stop();

@@ -6,7 +6,7 @@
 #include <unistd.h>
 #include <bits/types/sig_atomic_t.h>
 #include <malloc.h>
-#include "common.h"
+#include "../common.h"
 #include "analyzer.h"
 
 volatile static sig_atomic_t running = FALSE;
