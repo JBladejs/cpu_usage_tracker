@@ -6,7 +6,7 @@
 #include <signal.h>
 #include <string.h>
 #include <stdlib.h>
-#include <caca_conio.h>
+#include <unistd.h>
 #include "threads/analyzer.h"
 #include "threads/printer.h"
 #include "file_io/statfile.h"
