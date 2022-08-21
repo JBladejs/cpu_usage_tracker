@@ -8,7 +8,6 @@
 #include "reader.h"
 
 void analyzer_init(u16 cores);
-struct Queue *analyzer_get_queue();
 void analyzer_add_data(struct CpuStats *stat);
 struct Thread *analyzer_get_thread();
 
