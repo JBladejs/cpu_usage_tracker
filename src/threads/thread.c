@@ -47,7 +47,3 @@ void thread_time(struct Thread *thread, u8 reset) {
         thread->timer++;
     }
 }
-
-size_t thread_size() {
-    return sizeof (struct Thread);
-}

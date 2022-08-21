@@ -7,6 +7,7 @@
 #include <malloc.h>
 #include "analyzer.h"
 #include "thread.h"
+#include "logger.h"
 
 static struct Statfile *stat_reader = NULL;
 static struct Thread *thread = NULL;
@@ -32,6 +33,7 @@ static void *reader_thread_routine(void *arg) {
     while (thread_is_running(thread)) {
         thread_time(thread, TRUE);
         statfile_read(stat_reader, stats);
+        logger_log("Sending stats to analyzer.");
         analyzer_add_data(stats);
         sleep(1);
     }

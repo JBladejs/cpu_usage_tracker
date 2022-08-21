@@ -8,13 +8,13 @@
 struct Logfile *logfile_init(char *file_name) {
     struct Logfile *logfile = malloc(sizeof(struct Logfile));
     logfile->file_name = file_name;
-    logfile->file = fopen(file_name, "a");
+    logfile->file = fopen(file_name, "a+");
     if (logfile->file == NULL) return NULL;
     return logfile;
 }
 
 void logfile_write(struct Logfile *logfile, char *message) {
-    fprintf(logfile->file, "%s", message);
+    fprintf(logfile->file, "%s\n", message);
 }
 
 void logfile_destroy(struct Logfile *logfile) {
