@@ -33,7 +33,6 @@ static void *reader_thread_routine(void *arg) {
     while (thread_is_running(thread)) {
         thread_time(thread, TRUE);
         statfile_read(stat_reader, stats);
-        logger_log("Sending stats to analyzer.");
         analyzer_add_data(stats);
         sleep(1);
     }

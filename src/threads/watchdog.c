@@ -3,9 +3,9 @@
 //
 
 #include <unistd.h>
-#include <stdlib.h>
-#include <stdio.h>
 #include "watchdog.h"
+#include "logger.h"
+#include "../program.h"
 
 static struct Thread *thread = NULL;
 static struct Thread **watched_threads = NULL;
@@ -16,9 +16,8 @@ static void *watchdog_thread_routine(void *arg) {
         for (int i = 0; i < thread_num; ++i) {
             thread_time(watched_threads[i], FALSE);
             if (thread_get_timer(watched_threads[i]) > 2) {
-                fprintf(stderr, "Watchdog: Thread is not responding!\n");
-                //TODO: properly terminate the program
-                exit(2);
+                logger_log("Watchdog: thread is not responding. Terminating program...");
+                program_terminate();
             }
         }
         sleep(1);

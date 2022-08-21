@@ -9,6 +9,7 @@
 #include "../file_io/logfile.h"
 #include "../queue.h"
 #include "thread.h"
+#include "../program.h"
 
 static struct Logfile *logfile;
 static struct Queue *log_queue;
@@ -31,8 +32,7 @@ void logger_init() {
     logfile = logfile_init("cpu_usage_tracker.log");
     if (logfile == NULL) {
         perror("Error: could not initialize logfile\n");
-        //TODO: terminate properly
-        exit(1);
+        program_terminate(0);
     }
     log_queue = QUEUE_NEW(char[255], 255);
     thread = thread_create(logger_thread_routine);

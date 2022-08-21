@@ -5,6 +5,7 @@
 #ifndef CPU_USAGE_TRACKER_PROGRAM_H
 #define CPU_USAGE_TRACKER_PROGRAM_H
 
-void program_terminate(int signum);
+void program_handle_signal(int signum);
+void program_terminate();
 
 #endif //CPU_USAGE_TRACKER_PROGRAM_H

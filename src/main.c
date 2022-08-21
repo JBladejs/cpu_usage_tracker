@@ -2,7 +2,6 @@
 // Created by Alan Ćwiek on 8/19/22.
 //
 
-#include <stdio.h>
 #include <signal.h>
 #include <string.h>
 #include <stdlib.h>
@@ -17,14 +16,14 @@
 int main() {
     struct sigaction action;
     memset (&action, 0, sizeof (struct sigaction));
-    action.sa_handler = &program_terminate;
+    action.sa_handler = &program_handle_signal;
     sigaction(SIGTERM, &action, NULL);
     sigaction(SIGINT, &action, NULL);
 
     struct Statfile *statfile = statfile_initialize("/proc/stat");
     if (statfile == NULL) {
-        //TODO: alert watchdog
-        return 1;
+        logger_log("Error: Could not open /proc/stat. Terminating program...");
+        exit(1);
     }
     u16 core_count = statfile_get_core_count(statfile);
 
