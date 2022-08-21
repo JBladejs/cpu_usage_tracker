@@ -23,6 +23,7 @@ static void *logger_thread_routine(void *arg) {
             free(message);
         }
     }
+    logger_log("Ending program...");
     logfile_destroy(logfile);
 }
 
