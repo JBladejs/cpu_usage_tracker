@@ -7,13 +7,14 @@
 #include <signal.h>
 #include <string.h>
 #include <stdlib.h>
+#include <unistd.h>
 #include "analyzer.h"
 #include "printer.h"
 #include "stats.h"
 #include "thread.h"
 
 void terminate(int signum) {
-    reader_destroy();
+    reader_stop();
     analyzer_stop();
     printer_destroy();
 }
@@ -52,6 +53,7 @@ int main() {
         perror("Could not create a thread!");
         return 1;
     }
+
     pthread_join(reader_thread, NULL);
     pthread_join(analyzer_thread, NULL);
     thread_join(printer_get_thread());

@@ -10,6 +10,6 @@
 
 void reader_set_stat_reader(struct Stats *reader);
 void *reader_init(void *arg);
-void reader_destroy();
+void reader_stop();
 
 #endif //CPU_USAGE_TRACKER_READER_H

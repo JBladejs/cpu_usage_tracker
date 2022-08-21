@@ -16,6 +16,13 @@ void reader_set_stat_reader(struct Stats *reader) {
     stat_reader = reader;
 }
 
+static void reader_destroy() {
+    running = FALSE;
+    stat_destroy(stat_reader);
+    stat_reader = NULL;
+}
+
+
 void *reader_init(void *arg) {
     running = TRUE;
 
@@ -29,12 +36,9 @@ void *reader_init(void *arg) {
         sleep(1);
     }
 
-    free(stats);
     reader_destroy();
 }
 
-void reader_destroy() {
+void reader_stop() {
     running = FALSE;
-    stat_destroy(stat_reader);
-    stat_reader = NULL;
 }
