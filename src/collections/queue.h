@@ -5,7 +5,7 @@
 #ifndef CPU_USAGE_TRACKER_QUEUE_H
 #define CPU_USAGE_TRACKER_QUEUE_H
 
-#include "common.h"
+#include "../common.h"
 
 #define QUEUE_NEW(type, capacity) queue_create(capacity, sizeof(type))
 

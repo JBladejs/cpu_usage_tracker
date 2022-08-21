@@ -8,13 +8,21 @@ include(CTest)
 file(GLOB FILE_IO_HEADER_FILES "src/file_io/*.h")
 file(GLOB FILE_IO_SOURCE_FILES "src/file_io/*.c")
 
-add_library(file_io ${FILE_IO_SOURCE_FILES} ${FILE_IO_HEADER_FILES})
+file(GLOB HELPER_HEADER_FILES "src/helper/*.h")
+file(GLOB HELPER_SOURCE_FILES "src/helper/*.c")
+
+file(GLOB COLLECTIONS_HEADER_FILES "src/collections/*.h")
+file(GLOB COLLECTIONS_SOURCE_FILES "src/collections/*.c")
 
 file(GLOB HEADER_FILES "src/*.h" "src/threads/*.h")
 file(GLOB SOURCE_FILES "src/*.c" "src/threads/*.c")
 
+add_library(file_io ${FILE_IO_SOURCE_FILES} ${FILE_IO_HEADER_FILES})
+add_library(helper ${HELPER_SOURCE_FILES} ${HELPER_HEADER_FILES})
+add_library(collections ${COLLECTIONS_SOURCE_FILES} ${COLLECTIONS_HEADER_FILES})
+
 add_executable(cpu_usage_tracker ${SOURCE_FILES} ${HEADER_FILES})
-target_link_libraries(cpu_usage_tracker PRIVATE file_io)
+target_link_libraries(cpu_usage_tracker PRIVATE file_io helper collections)
 
 add_subdirectory(tests)
 enable_testing()

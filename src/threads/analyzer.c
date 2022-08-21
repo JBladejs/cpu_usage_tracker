@@ -7,9 +7,9 @@
 #include "reader.h"
 #include "analyzer.h"
 #include "printer.h"
-#include "../queue.h"
+#include "../collections/queue.h"
 #include "thread.h"
-#include "../usage_calculator.h"
+#include "../helper/usage_calculator.h"
 
 static struct CpuStats *prevStat = NULL;
 static struct Queue *queue = NULL;

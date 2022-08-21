@@ -6,7 +6,7 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include "printer.h"
-#include "../queue.h"
+#include "../collections/queue.h"
 #include "thread.h"
 
 static struct Queue *queue = NULL;

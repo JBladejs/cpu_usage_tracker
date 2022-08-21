@@ -8,5 +8,7 @@ configure_file(test_proc_stat test_proc_stat COPYONLY)
 add_executable(file_io_tests src/file_io_tester.c)
 
 target_link_libraries(file_io_tests PRIVATE file_io)
+target_link_libraries(file_io_tests PRIVATE file_io)
+target_link_libraries(file_io_tests PRIVATE file_io)
 
 add_test(file_io_tests file_io_tests)

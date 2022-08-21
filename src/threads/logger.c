@@ -7,7 +7,7 @@
 #include <unistd.h>
 #include "logger.h"
 #include "../file_io/logfile.h"
-#include "../queue.h"
+#include "../collections/queue.h"
 #include "thread.h"
 #include "../program.h"
 
