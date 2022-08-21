@@ -15,6 +15,12 @@ static struct Queue *queue = NULL;
 static u16 core_count = 1;
 static struct Thread *thread = NULL;
 
+static void printer_destroy() {
+    running = FALSE;
+    free(queue);
+    queue = NULL;
+}
+
 static void *printer_thread_routine(void *arg) {
     running = TRUE;
     queue = queue_create(255, core_count * sizeof (f32));
@@ -52,10 +58,8 @@ void printer_set_core_count(u16 value) {
     core_count = value;
 }
 
-void printer_destroy() {
+void printer_stop() {
     running = FALSE;
-    free(queue);
-    queue = NULL;
 }
 
 
