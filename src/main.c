@@ -8,7 +8,7 @@
 #include <stdlib.h>
 #include "threads/analyzer.h"
 #include "threads/printer.h"
-#include "statfile.h"
+#include "file_io/statfile.h"
 #include "threads/watchdog.h"
 #include "threads/thread.h"
 

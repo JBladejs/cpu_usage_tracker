@@ -8,6 +8,7 @@
 
 struct Statfile {
     FILE *file;
+    char *file_name;
     u16 core_count;
 };
 
@@ -27,6 +28,7 @@ static u16 read_core_count(struct Statfile *reader) {
 
 struct Statfile *statfile_initialize(char *file_name) {
     struct Statfile *reader = malloc(sizeof(struct Statfile));
+    reader->file_name = file_name;
     reader->file = fopen(file_name, "r");
     if (reader->file == NULL) return NULL;
 

@@ -6,7 +6,7 @@
 #define CPU_USAGE_TRACKER_READER_H
 
 #include "../common.h"
-#include "../statfile.h"
+#include "../file_io/statfile.h"
 
 void reader_init(struct Statfile *statfile);
 struct Thread *reader_get_thread();

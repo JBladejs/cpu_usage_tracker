@@ -5,7 +5,7 @@
 #ifndef CPU_USAGE_TRACKER_STATFILE_H
 #define CPU_USAGE_TRACKER_STATFILE_H
 
-#include "common.h"
+#include "../common.h"
 
 struct CpuStats {
     u64 user;

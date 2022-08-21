@@ -6,7 +6,7 @@
 #define CPU_USAGE_TRACKER_USAGE_MONITOR_H
 
 #include "common.h"
-#include "statfile.h"
+#include "file_io/statfile.h"
 
 f32 usage_calculator_get_usage(struct CpuStats *prev, struct CpuStats *current);
 
