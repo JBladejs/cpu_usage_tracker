@@ -40,7 +40,7 @@ void queue_enqueue(struct Queue *queue, void* data) {
     }
     queue->back = (queue->back + 1) % queue->capacity;
     queue->size++;
-    memcpy(queue->data + queue->back * queue->element_size, data, queue->element_size);
+    memcpy((s8*) queue->data + queue->back * queue->element_size, data, queue->element_size);
 }
 
 void *queue_dequeue(struct Queue *queue) {
@@ -49,7 +49,7 @@ void *queue_dequeue(struct Queue *queue) {
         return NULL;
     }
     data = malloc(queue->element_size);
-    memcpy(data, queue->data + queue->front * queue->element_size, queue->element_size);
+    memcpy(data, (s8*) queue->data + queue->front * queue->element_size, queue->element_size);
     queue->front = (queue->front + 1) % queue->capacity;
     queue->size--;
     return data;
