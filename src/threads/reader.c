@@ -33,6 +33,7 @@ static void *reader_thread_routine(struct Thread *used_thread) {
         sleep(1);
     }
 
+    free(stats);
     reader_destroy();
     return NULL;
 }

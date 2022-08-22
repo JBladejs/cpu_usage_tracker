@@ -5,6 +5,7 @@
 #include <string.h>
 #include <signal.h>
 #include <stdlib.h>
+#include <unistd.h>
 #include "program.h"
 #include "file_io/statfile.h"
 #include "threads/logger.h"
