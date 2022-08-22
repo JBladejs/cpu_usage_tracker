@@ -5,6 +5,8 @@
 #ifndef CPU_USAGE_TRACKER_LOGGER_H
 #define CPU_USAGE_TRACKER_LOGGER_H
 
+#include "buffer.h"
+
 void logger_init();
 void logger_log(char* message);
 struct Thread *logger_get_thread();

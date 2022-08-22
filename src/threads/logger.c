@@ -7,25 +7,22 @@
 #include <unistd.h>
 #include "logger.h"
 #include "../file_io/logfile.h"
-#include "../collections/queue.h"
 #include "thread.h"
 #include "../program.h"
 
 static struct Logfile *logfile;
-static struct Queue *log_queue;
 static struct Thread *thread;
+static struct Buffer *log_buffer;
 
 static void *logger_thread_routine(struct Thread *used_thread) {
     logger_log("Program started.");
     while (thread_is_running(used_thread)) {
-        thread_time(used_thread, TRUE);
-        if (!queue_is_empty(log_queue)) {
-            char* message = queue_dequeue(log_queue);
-            logfile_write(logfile, message);
-            free(message);
-        }
+        char* message = thread_read_from_buffer(used_thread);
+        logfile_write(logfile, message);
+        free(message);
     }
     logfile_destroy(logfile);
+    buffer_destroy(log_buffer);
 }
 
 void logger_init() {
@@ -34,14 +31,13 @@ void logger_init() {
         perror("Error: could not initialize logfile\n");
         program_terminate();
     }
-    log_queue = QUEUE_NEW(char[255], 255);
-    thread = thread_create(logger_thread_routine, NULL, NULL);
+    log_buffer = BUFFER_NEW(char[255], 20);
+    thread = thread_create(logger_thread_routine, log_buffer, NULL);
     thread_run(thread, NULL);
 }
 
 void logger_log(char *message) {
-    if (logfile == NULL) return;
-    queue_enqueue(log_queue, message);
+    buffer_push(log_buffer, message);
 }
 
 struct Thread *logger_get_thread() {

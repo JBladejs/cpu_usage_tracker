@@ -25,6 +25,7 @@ static void *printer_thread_routine(struct Thread *used_thread) {
                 printf("Core %d usage: %.2f%%\n", i, usage[i]);
             }
         }
+        printf("\n");
     }
     free(usage);
 }

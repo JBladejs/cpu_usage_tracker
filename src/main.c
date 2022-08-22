@@ -2,16 +2,17 @@
 // Created by Alan Ćwiek on 8/19/22.
 //
 
-#include <signal.h>
 #include <string.h>
+#include <signal.h>
 #include <stdlib.h>
+#include <unistd.h>
+#include "program.h"
+#include "file_io/statfile.h"
+#include "threads/logger.h"
+#include "threads/reader.h"
 #include "threads/analyzer.h"
 #include "threads/printer.h"
-#include "file_io/statfile.h"
 #include "threads/watchdog.h"
-#include "threads/thread.h"
-#include "threads/logger.h"
-#include "program.h"
 
 int main() {
     struct sigaction action;
@@ -35,13 +36,15 @@ int main() {
     analyzer_init(core_count, read_data, analyzed_data);
     printer_init(core_count, analyzed_data);
 
-    struct Thread **threads = malloc(sizeof (struct Thread) * 4);
+    struct Thread **threads = malloc(sizeof (struct Thread) * 3);
     threads[0] = reader_get_thread();
     threads[1] = analyzer_get_thread();
     threads[2] = printer_get_thread();
-    threads[3] = logger_get_thread();
 
-    watchdog_init(threads, 4);
+    watchdog_init(threads, 3);
+
+    sleep(5);
+    program_terminate();
 
     thread_join(watchdog_get_thread());
     thread_join(reader_get_thread());

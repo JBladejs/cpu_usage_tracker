@@ -6,7 +6,6 @@
 #include <malloc.h>
 #include "reader.h"
 #include "analyzer.h"
-#include "printer.h"
 #include "../collections/queue.h"
 #include "thread.h"
 #include "../helper/usage_calculator.h"
