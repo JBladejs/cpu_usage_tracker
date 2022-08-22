@@ -10,10 +10,10 @@
 
 struct ThreadManager {
     struct Thread *threads[10];
-    u8 index;
+    s32 index;
 
     //padding
-    u64 : 56;
+    u32 : 32;
 };
 
 static struct ThreadManager *thread_manager_instance(void) {
@@ -28,7 +28,7 @@ static struct ThreadManager *thread_manager_instance(void) {
 }
 
 static pthread_t thread_manager_get_next_id(void) {
-    return thread_manager_instance()->index++;
+    return (pthread_t) thread_manager_instance()->index++;
 }
 
 static void thread_manager_add_thread(struct Thread *thread) {
@@ -38,7 +38,10 @@ static void thread_manager_add_thread(struct Thread *thread) {
 
 static void thread_manager_destroy_all(void) {
     struct ThreadManager *manager = thread_manager_instance();
-    for (s8 i = 10; i >= 0; --i) {
+    for (s32 i = manager->index - 1; i >= 0; --i) {
+        thread_stop(manager->threads[i]);
+    }
+    for (s32 i = manager->index - 1; i >= 0; --i) {
         thread_destroy(manager->threads[i]);
     }
 }
@@ -76,6 +79,8 @@ void thread_join(struct Thread *thread) {
 
 void thread_stop(struct Thread *thread) {
     thread->running = FALSE;
+    if (thread->read_buffer != NULL) buffer_end(thread->read_buffer);
+    if (thread->write_buffer != NULL) buffer_end(thread->write_buffer);
 }
 
 sig_atomic_t thread_is_running(struct Thread *thread) {
@@ -104,7 +109,9 @@ void *thread_read_from_buffer(struct Thread *thread) {
 }
 
 void thread_destroy(struct Thread *thread) {
-    thread_stop(thread);
+    thread_join(thread);
+    if (thread->read_buffer != NULL) buffer_destroy(thread->read_buffer);
+    if (thread->write_buffer != NULL) buffer_destroy(thread->write_buffer);
     free(thread);
 }
 

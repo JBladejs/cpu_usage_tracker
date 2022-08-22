@@ -16,6 +16,7 @@ static void *printer_thread_routine(struct Thread *used_thread) {
     while (thread_is_running(used_thread)) {
         thread_time(used_thread, TRUE);
         usage = thread_read_from_buffer(used_thread);
+        if (usage == NULL) break;
         system("clear");
         for (int i = 0; i < core_count; ++i) {
             if (i == 0) {

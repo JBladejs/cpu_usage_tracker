@@ -58,15 +58,8 @@ int main(void) {
     threads[2] = printer_get_thread();
 
     watchdog_init(threads, 3);
-
-    thread_join(watchdog_get_thread());
-    thread_join(reader_get_thread());
-    thread_join(analyzer_get_thread());
-    thread_join(printer_get_thread());
-    thread_join(logger_get_thread());
-
-    buffer_destroy(read_data);
-    buffer_destroy(analyzed_data);
+    sleep(5);
+    program_terminate();
 
     return 0;
 }

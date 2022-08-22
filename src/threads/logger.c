@@ -18,6 +18,7 @@ static void *logger_thread_routine(struct Thread *used_thread) {
     logger_log("Program started.");
     while (thread_is_running(used_thread)) {
         char* message = thread_read_from_buffer(used_thread);
+        if (message == NULL) break;
         logfile_write(logfile, message);
         free(message);
     }

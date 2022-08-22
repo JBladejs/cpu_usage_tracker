@@ -13,12 +13,14 @@ struct Buffer *buffer_create(u8 capacity, size_t element_size) {
     pthread_mutex_init(&buffer->mutex, NULL);
     sem_init(&buffer->empty, 0, capacity);
     sem_init(&buffer->full, 0, 0);
+    buffer->active = TRUE;
     return buffer;
 }
 
 void buffer_push(struct Buffer *buffer, void *data) {
     sem_wait(&buffer->empty);
     pthread_mutex_lock(&buffer->mutex);
+    if (!buffer->active) return;
 
     queue_enqueue(buffer->queue, data);
 
@@ -30,6 +32,7 @@ void *buffer_pop(struct Buffer *buffer) {
     void *data;
     sem_wait(&buffer->full);
     pthread_mutex_lock(&buffer->mutex);
+    if (!buffer->active) return NULL;
 
     data = queue_dequeue(buffer->queue);
 
@@ -37,6 +40,12 @@ void *buffer_pop(struct Buffer *buffer) {
     sem_post(&buffer->empty);
 
     return data;
+}
+
+void buffer_end(struct Buffer *buffer) {
+    buffer->active = FALSE;
+    sem_post(&buffer->empty);
+    sem_post(&buffer->full);
 }
 
 void buffer_destroy(struct Buffer *buffer) {

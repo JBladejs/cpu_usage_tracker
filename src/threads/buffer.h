@@ -15,11 +15,16 @@ struct Buffer {
     struct Queue *queue;
     pthread_mutex_t mutex;
     sem_t empty, full;
+    u8 active;
+
+    //padding
+    u64 : 56;
 };
 
 struct Buffer *buffer_create(u8 capacity, size_t element_size);
 void buffer_push(struct Buffer *buffer, void *data);
 void *buffer_pop(struct Buffer *buffer);
+void buffer_end(struct Buffer *buffer);
 void buffer_destroy(struct Buffer *buffer);
 
 #endif //CPU_USAGE_TRACKER_BUFFER_H

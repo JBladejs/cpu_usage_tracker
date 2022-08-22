@@ -6,29 +6,25 @@
 #include <malloc.h>
 #include "reader.h"
 #include "analyzer.h"
-#include "../collections/queue.h"
 #include "thread.h"
 #include "../helper/usage_calculator.h"
 #include "buffer.h"
 
 static struct CpuStats *prevStat = NULL;
-static struct Queue *queue = NULL;
 static struct Thread *thread = NULL;
 
 static u16 core_count = 1;
 
-static void destroy() {
-    queue_destroy(queue);
-    queue = NULL;
-}
-
 static void *analyzer_thread_routine(struct Thread *used_thread) {
-    queue = queue_create(255, sizeof(struct CpuStats) * core_count);
     while (thread_is_running(used_thread)) {
         thread_time(used_thread, TRUE);
         if (prevStat != NULL) {
             struct CpuStats *current = thread_read_from_buffer(thread);
-            f32 *usage = malloc(sizeof (f32) * core_count);
+            f32 *usage;
+            if (current == NULL) {
+                break;
+            }
+            usage = malloc(sizeof (f32) * core_count);
             for (int i = 0; i < core_count; ++i) {
                 usage[i] = usage_calculator_get_usage(&prevStat[i], &current[i]);
             }
@@ -41,7 +37,7 @@ static void *analyzer_thread_routine(struct Thread *used_thread) {
         }
         sleep(1);
     }
-    destroy();
+    free(prevStat);
     return NULL;
 }
 

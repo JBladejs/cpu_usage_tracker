@@ -5,10 +5,6 @@
 #include "program.h"
 #include "threads/logger.h"
 #include "threads/thread.h"
-#include "threads/watchdog.h"
-#include "threads/reader.h"
-#include "threads/analyzer.h"
-#include "threads/printer.h"
 
 void program_handle_signal(void) {
     logger_log("Signal received. Terminating program...");
@@ -16,9 +12,5 @@ void program_handle_signal(void) {
 }
 
 void program_terminate(void) {
-    thread_stop(watchdog_get_thread());
-    thread_stop(reader_get_thread());
-    thread_stop(analyzer_get_thread());
-    thread_stop(printer_get_thread());
-    thread_stop(logger_get_thread());
+    thread_destroy_all();
 }
