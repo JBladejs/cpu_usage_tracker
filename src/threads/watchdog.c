@@ -11,8 +11,8 @@ static struct Thread *thread = NULL;
 static struct Thread **watched_threads = NULL;
 static size_t thread_num = 0;
 
-static void *watchdog_thread_routine(void *arg) {
-    while (thread_is_running(thread)) {
+static void *watchdog_thread_routine(struct Thread *used_thread) {
+    while (thread_is_running(used_thread)) {
         for (int i = 0; i < thread_num; ++i) {
             thread_time(watched_threads[i], FALSE);
             if (thread_get_timer(watched_threads[i]) > 2) {

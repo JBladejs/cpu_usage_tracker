@@ -15,10 +15,10 @@ static struct Logfile *logfile;
 static struct Queue *log_queue;
 static struct Thread *thread;
 
-static void *logger_thread_routine(void *arg) {
+static void *logger_thread_routine(struct Thread *used_thread) {
     logger_log("Program started.");
-    while (thread_is_running(thread)) {
-        thread_time(thread, TRUE);
+    while (thread_is_running(used_thread)) {
+        thread_time(used_thread, TRUE);
         if (!queue_is_empty(log_queue)) {
             char* message = queue_dequeue(log_queue);
             logfile_write(logfile, message);
@@ -32,7 +32,7 @@ void logger_init() {
     logfile = logfile_init("cpu_usage_tracker.log");
     if (logfile == NULL) {
         perror("Error: could not initialize logfile\n");
-        program_terminate(0);
+        program_terminate();
     }
     log_queue = QUEUE_NEW(char[255], 255);
     thread = thread_create(logger_thread_routine);

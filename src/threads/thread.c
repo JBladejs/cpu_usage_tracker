@@ -7,7 +7,7 @@
 #include <stdlib.h>
 #include "thread.h"
 
-struct Thread *thread_create(void *(*start)(void * arg)) {
+struct Thread *thread_create(void *(*start)(struct Thread *thread)) {
     pthread_t thread_id;
     struct Thread *thread = malloc(sizeof(struct Thread));
     thread->start_routine = start;
@@ -15,9 +15,14 @@ struct Thread *thread_create(void *(*start)(void * arg)) {
     return thread;
 }
 
+static void *thread_routine(void *arg) {
+    struct Thread *thread = (struct Thread *) arg;
+    thread->start_routine(arg);
+}
+
 void thread_run(struct Thread *thread, void *arg) {
     thread->running = TRUE;
-    u8 result = pthread_create(&(thread->thread_id), NULL, thread->start_routine, NULL);
+    u8 result = pthread_create(&(thread->thread_id), NULL, thread_routine, thread);
     if (result != 0) {
         perror("Could not create a Thread!");
         exit(1);
