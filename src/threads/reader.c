@@ -30,8 +30,6 @@ static void *reader_thread_routine(struct Thread *used_thread) {
         statfile_read(stat_reader, stats);
 
         thread_write_to_buffer(used_thread, stats);
-
-        sleep(1);
     }
 
     reader_destroy();

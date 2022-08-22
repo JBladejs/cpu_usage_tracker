@@ -26,6 +26,7 @@ static void *printer_thread_routine(struct Thread *used_thread) {
             }
         }
         printf("\n");
+        sleep(1);
     }
     free(usage);
 }
