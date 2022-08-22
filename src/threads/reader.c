@@ -11,11 +11,11 @@
 static struct Statfile *stat_reader = NULL;
 static struct Thread *thread = NULL;
 
-struct Thread *reader_get_thread() {
+struct Thread *reader_get_thread(void) {
     return thread;
 }
 
-static void reader_destroy() {
+static void reader_destroy(void) {
     statfile_destroy(stat_reader);
     stat_reader = NULL;
 }
