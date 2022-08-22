@@ -7,8 +7,8 @@
 
 #include "buffer.h"
 
-void logger_init();
+void logger_init(void);
 void logger_log(char* message);
-struct Thread *logger_get_thread();
+struct Thread *logger_get_thread(void);
 
 #endif //CPU_USAGE_TRACKER_LOGGER_H

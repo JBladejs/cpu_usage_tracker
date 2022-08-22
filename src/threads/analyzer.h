@@ -9,6 +9,6 @@
 #include "buffer.h"
 
 void analyzer_init(u16 cores, struct Buffer *read_buffer, struct Buffer *write_buffer);
-struct Thread *analyzer_get_thread();
+struct Thread *analyzer_get_thread(void);
 
 #endif //CPU_USAGE_TRACKER_ANALYZER_H

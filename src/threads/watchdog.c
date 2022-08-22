@@ -14,7 +14,7 @@ static size_t thread_num = 0;
 
 static void *watchdog_thread_routine(struct Thread *used_thread) {
     while (thread_is_running(used_thread)) {
-        for (int i = 0; i < thread_num; ++i) {
+        for (size_t i = 0; i < thread_num; ++i) {
             thread_time(watched_threads[i], FALSE);
             if (thread_get_timer(watched_threads[i]) > 3) {
                 char message[255];
@@ -27,15 +27,16 @@ static void *watchdog_thread_routine(struct Thread *used_thread) {
         }
         sleep(1);
     }
+    return NULL;
 }
 
 void watchdog_init(struct Thread **threads, size_t thread_count) {
     watched_threads = threads;
     thread = thread_create("watchdog", watchdog_thread_routine, NULL, NULL);
-    thread_run(thread, NULL);
+    thread_run(thread);
     thread_num = thread_count;
 }
 
-struct Thread *watchdog_get_thread() {
+struct Thread *watchdog_get_thread(void) {
     return thread;
 }

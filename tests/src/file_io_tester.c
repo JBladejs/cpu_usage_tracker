@@ -16,9 +16,10 @@ static void proc_stat_open_test(void) {
 }
 
 static void dummy_proc_stat_test(void) {
+    struct CpuStats *cpu_stats;
     struct Statfile *dummy = statfile_initialize("test_proc_stat");
     assert(statfile_get_core_count(dummy) == 4);
-    struct CpuStats *cpu_stats = malloc(sizeof(struct CpuStats) * 4);
+    cpu_stats = malloc(sizeof(struct CpuStats) * 4);
     statfile_read(dummy, cpu_stats);
     assert(cpu_stats[0].user == 762786);
     assert(cpu_stats[1].nice == 407);
@@ -27,16 +28,19 @@ static void dummy_proc_stat_test(void) {
 }
 
 static void logfile_test(void) {
+    struct Logfile *log;
+    FILE *file;
+    char buffer[255];
+
     remove("test.log");
 
-    struct Logfile *log = logfile_init("test.log");
+    log = logfile_init("test.log");
     logfile_write(log, "test");
     logfile_destroy(log);
 
-    FILE *file = fopen("test.log", "r");
+    file = fopen("test.log", "r");
     assert(file != NULL);
 
-    char buffer[255];
     fscanf(file, "%*s %*s %s", buffer);
     assert(strcmp(buffer, "test") == 0);
 
@@ -59,7 +63,7 @@ static void logfile_test(void) {
     remove("test.log");
 }
 
-int main(int argc, char *argv[]) {
+int main(void) {
     proc_stat_open_test();
     dummy_proc_stat_test();
     logfile_test();

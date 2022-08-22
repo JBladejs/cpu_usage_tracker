@@ -27,10 +27,11 @@ void buffer_push(struct Buffer *buffer, void *data) {
 }
 
 void *buffer_pop(struct Buffer *buffer) {
+    void *data;
     sem_wait(&buffer->full);
     pthread_mutex_lock(&buffer->mutex);
 
-    void *data = queue_dequeue(buffer->queue);
+    data = queue_dequeue(buffer->queue);
 
     pthread_mutex_unlock(&buffer->mutex);
     sem_post(&buffer->empty);

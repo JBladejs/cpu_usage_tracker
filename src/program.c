@@ -10,12 +10,12 @@
 #include "threads/analyzer.h"
 #include "threads/printer.h"
 
-void program_handle_signal(int signum) {
+void program_handle_signal(void) {
     logger_log("Signal received. Terminating program...");
     program_terminate();
 }
 
-void program_terminate() {
+void program_terminate(void) {
     thread_stop(watchdog_get_thread());
     thread_stop(reader_get_thread());
     thread_stop(analyzer_get_thread());

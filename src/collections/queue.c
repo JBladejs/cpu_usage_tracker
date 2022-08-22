@@ -42,10 +42,11 @@ void queue_enqueue(struct Queue *queue, void* data) {
 }
 
 void *queue_dequeue(struct Queue *queue) {
+    void* data;
     if (queue_is_empty(queue)) {
         return NULL;
     }
-    void* data = malloc(queue->element_size);
+    data = malloc(queue->element_size);
     memcpy(data, queue->data + queue->front * queue->element_size, queue->element_size);
     queue->front = (queue->front + 1) % queue->capacity;
     queue->size--;

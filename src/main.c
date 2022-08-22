@@ -14,10 +14,11 @@
 #include "threads/printer.h"
 #include "threads/watchdog.h"
 
-int main() {
+int main(void) {
+    u16 core_count;
     struct sigaction action;
     memset (&action, 0, sizeof (struct sigaction));
-    action.sa_handler = &program_handle_signal;
+    action.sa_handler = (__sighandler_t) &program_handle_signal;
     sigaction(SIGTERM, &action, NULL);
     sigaction(SIGINT, &action, NULL);
 
@@ -26,10 +27,10 @@ int main() {
         logger_log("Error: Could not open /proc/stat. Terminating program...");
         exit(1);
     }
-    u16 core_count = statfile_get_core_count(statfile);
+    core_count = statfile_get_core_count(statfile);
 
-    struct Buffer *read_data = BUFFER_ARRAY_NEW(struct CpuStats, core_count, 5);
-    struct Buffer *analyzed_data = BUFFER_ARRAY_NEW(f32, core_count, 10);
+    struct Buffer *read_data = BUFFER_ARRAY_NEW(struct CpuStats, (unsigned long) core_count, 5);
+    struct Buffer *analyzed_data = BUFFER_ARRAY_NEW(f32, (unsigned long) core_count, 10);
 
     logger_init();
     reader_init(statfile, read_data);

@@ -22,12 +22,13 @@ thread_create(char *name, void *(*start)(struct Thread *), struct Buffer *read_b
 
 static void *thread_routine(void *arg) {
     struct Thread *thread = (struct Thread *) arg;
-    thread->start_routine(arg);
+    return thread->start_routine(arg);
 }
 
-void thread_run(struct Thread *thread, void *arg) {
+void thread_run(struct Thread *thread) {
+    u8 result;
     thread->running = TRUE;
-    u8 result = pthread_create(&(thread->thread_id), NULL, thread_routine, thread);
+    result = (u8) pthread_create(&(thread->thread_id), NULL, thread_routine, thread);
     if (result != 0) {
         perror("Could not create a Thread!");
         exit(1);

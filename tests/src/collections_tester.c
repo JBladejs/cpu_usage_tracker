@@ -43,7 +43,7 @@ static void queue_test(void) {
     queue_destroy(queue);
 }
 
-int main(int argc, char **argv) {
+int main(void) {
     queue_test();
     return 0;
 }

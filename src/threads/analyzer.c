@@ -23,12 +23,12 @@ static void destroy() {
 }
 
 static void *analyzer_thread_routine(struct Thread *used_thread) {
-    queue = queue_create(255, sizeof(struct CpuStats) * core_count);
+    queue = queue_create(255, sizeof(struct CpuStats) * (unsigned long) core_count);
     while (thread_is_running(used_thread)) {
         thread_time(used_thread, TRUE);
         if (prevStat != NULL) {
             struct CpuStats *current = thread_read_from_buffer(thread);
-            f32 *usage = malloc(sizeof (f32) * core_count);
+            f32 *usage = malloc(sizeof (f32) * (unsigned long) core_count);
             for (int i = 0; i < core_count; ++i) {
                 usage[i] = usage_calculator_get_usage(&prevStat[i], &current[i]);
             }
@@ -42,14 +42,15 @@ static void *analyzer_thread_routine(struct Thread *used_thread) {
         sleep(1);
     }
     destroy();
+    return NULL;
 }
 
-struct Thread *analyzer_get_thread() {
+struct Thread *analyzer_get_thread(void) {
     return thread;
 }
 
 void analyzer_init(u16 cores, struct Buffer *read_buffer, struct Buffer *write_buffer) {
     core_count = cores;
     thread = thread_create("analyzer", analyzer_thread_routine, read_buffer, write_buffer);
-    thread_run(thread, NULL);
+    thread_run(thread);
 }

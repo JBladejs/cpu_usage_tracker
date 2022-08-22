@@ -21,7 +21,7 @@ struct Thread {
 
 struct Thread *
 thread_create(char *name, void *(*start)(struct Thread *), struct Buffer *read_buffer, struct Buffer *write_buffer);
-void thread_run(struct Thread *thread, void *arg);
+void thread_run(struct Thread *thread);
 void thread_time(struct Thread *thread, u8 reset);
 u8 thread_get_timer(struct Thread *thread);
 void thread_write_to_buffer(struct Thread *thread, void* data);

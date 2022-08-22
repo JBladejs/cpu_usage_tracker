@@ -23,9 +23,10 @@ static void *logger_thread_routine(struct Thread *used_thread) {
     }
     logfile_destroy(logfile);
     buffer_destroy(log_buffer);
+    return NULL;
 }
 
-void logger_init() {
+void logger_init(void) {
     logfile = logfile_init("cpu_usage_tracker.log");
     if (logfile == NULL) {
         perror("Error: could not initialize logfile\n");
@@ -33,13 +34,13 @@ void logger_init() {
     }
     log_buffer = BUFFER_NEW(char[255], 20);
     thread = thread_create("logger", logger_thread_routine, log_buffer, NULL);
-    thread_run(thread, NULL);
+    thread_run(thread);
 }
 
 void logger_log(char *message) {
     buffer_push(log_buffer, message);
 }
 
-struct Thread *logger_get_thread() {
+struct Thread *logger_get_thread(void) {
     return thread;
 }

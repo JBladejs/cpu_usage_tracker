@@ -28,7 +28,7 @@ static void usage_test(void) {
     free(stats2);
 }
 
-int main(int argc, char **argv) {
+int main(void) {
     usage_test();
     return 0;
 }

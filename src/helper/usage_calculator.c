@@ -17,8 +17,10 @@ f32 usage_calculator_get_usage(struct CpuStats *prev, struct CpuStats *current) 
     u64 total_diff = total - prev_total;
     u64 idle_diff = idle - prev_idle;
 
+    f32 usage;
+
     if (total_diff == 0) return 0.0f;
-    f32 usage = ((f32) (total_diff - idle_diff) / (f32) total_diff) * 100.0f;
+    usage = ((f32) (total_diff - idle_diff) / (f32) total_diff) * 100.0f;
 
     return usage;
 }
