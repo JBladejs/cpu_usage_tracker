@@ -8,9 +8,10 @@
 #include "../../src/file_io/statfile.h"
 #include "../../src/helper/usage_calculator.h"
 
-void usage_test() {
+static void usage_test(void) {
     struct CpuStats *stats1 = calloc(1, sizeof(struct CpuStats));
     struct CpuStats *stats2 = calloc(1, sizeof(struct CpuStats));
+    f64 usage;
 
     stats2->user = 50;
     stats2->nice = 50;
@@ -20,7 +21,7 @@ void usage_test() {
     stats2->irq = 50;
     stats2->softirq = 50;
 
-    f64 usage = usage_calculator_get_usage(stats1, stats2);
+    usage = (f64) usage_calculator_get_usage(stats1, stats2);
     assert(fabs(usage - 71.4) < 0.1);
 
     free(stats1);

@@ -6,13 +6,13 @@
 #include <assert.h>
 #include "../../src/collections/queue.h"
 
-void queue_test() {
+static void queue_test(void) {
+    int data[6];
     struct Queue *queue = QUEUE_NEW(int, 5);
     assert(queue != NULL);
     assert(queue_is_empty(queue));
     assert(!queue_is_full(queue));
 
-    int data[6];
     for (int i = 0; i < 6; ++i) {
         data[i] = i + 1;
     }

@@ -9,13 +9,13 @@
 #include "../../src/file_io/statfile.h"
 #include "../../src/file_io/logfile.h"
 
-void proc_stat_open_test() {
+static void proc_stat_open_test(void) {
     struct Statfile *stats = statfile_initialize("/proc/stat");
     assert(stats != NULL);
     statfile_destroy(stats);
 }
 
-void dummy_proc_stat_test() {
+static void dummy_proc_stat_test(void) {
     struct Statfile *dummy = statfile_initialize("test_proc_stat");
     assert(statfile_get_core_count(dummy) == 4);
     struct CpuStats *cpu_stats = malloc(sizeof(struct CpuStats) * 4);
@@ -26,7 +26,7 @@ void dummy_proc_stat_test() {
     statfile_destroy(dummy);
 }
 
-void logfile_test() {
+static void logfile_test(void) {
     remove("test.log");
 
     struct Logfile *log = logfile_init("test.log");
