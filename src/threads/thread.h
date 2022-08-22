@@ -7,7 +7,7 @@
 
 #include "../common.h"
 #include "pthread.h"
-#include <bits/types/sig_atomic_t.h>
+#include <signal.h>
 
 struct Thread {
     pthread_t thread_id;
