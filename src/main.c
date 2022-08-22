@@ -32,7 +32,7 @@ int main() {
 
     logger_init();
     reader_init(statfile, read_data);
-    analyzer_init(core_count, read_data);
+    analyzer_init(core_count, read_data, NULL);
     printer_init(core_count);
 
     struct Thread **threads = malloc(sizeof (struct Thread) * 4);

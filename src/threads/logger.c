@@ -35,7 +35,7 @@ void logger_init() {
         program_terminate();
     }
     log_queue = QUEUE_NEW(char[255], 255);
-    thread = thread_create(logger_thread_routine, NULL);
+    thread = thread_create(logger_thread_routine, NULL, NULL);
     thread_run(thread, NULL);
 }
 

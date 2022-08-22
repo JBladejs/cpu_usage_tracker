@@ -29,7 +29,7 @@ static void *reader_thread_routine(struct Thread *used_thread) {
         thread_time(used_thread, TRUE);
         statfile_read(stat_reader, stats);
 
-        buffer_push(used_thread->buffer, stats);
+        thread_write_to_buffer(used_thread, stats);
 
         sleep(1);
     }
@@ -39,6 +39,6 @@ static void *reader_thread_routine(struct Thread *used_thread) {
 
 void reader_init(struct Statfile *statfile, struct Buffer *buffer) {
     stat_reader = statfile;
-    thread = thread_create(reader_thread_routine, buffer);
+    thread = thread_create(reader_thread_routine, NULL, buffer);
     thread_run(thread, NULL);
 }

@@ -28,7 +28,7 @@ static void *analyzer_thread_routine(struct Thread *used_thread) {
     while (thread_is_running(used_thread)) {
         thread_time(used_thread, TRUE);
         if (prevStat != NULL) {
-            struct CpuStats *current = buffer_pop(used_thread->buffer);
+            struct CpuStats *current = thread_read_from_buffer(thread);
             f32 *usage = malloc(sizeof (f32) * core_count);
             for (int i = 0; i < core_count; ++i) {
                 usage[i] = usage_calculator_get_usage(&prevStat[i], &current[i]);
@@ -38,7 +38,7 @@ static void *analyzer_thread_routine(struct Thread *used_thread) {
             free(usage);
             prevStat = current;
         } else {
-            prevStat = buffer_pop(used_thread->buffer);
+            prevStat = thread_read_from_buffer(thread);
 
         }
         sleep(1);
@@ -50,8 +50,8 @@ struct Thread *analyzer_get_thread() {
     return thread;
 }
 
-void analyzer_init(u16 cores, struct Buffer *buffer) {
+void analyzer_init(u16 cores, struct Buffer *read_buffer, struct Buffer *write_buffer) {
     core_count = cores;
-    thread = thread_create(analyzer_thread_routine, buffer);
+    thread = thread_create(analyzer_thread_routine, read_buffer, write_buffer);
     thread_run(thread, NULL);
 }

@@ -26,7 +26,7 @@ static void *watchdog_thread_routine(struct Thread *used_thread) {
 
 void watchdog_init(struct Thread **threads, size_t thread_count) {
     watched_threads = threads;
-    thread = thread_create(watchdog_thread_routine, NULL);
+    thread = thread_create(watchdog_thread_routine, NULL, NULL);
     thread_run(thread, NULL);
     thread_num = thread_count;
 }

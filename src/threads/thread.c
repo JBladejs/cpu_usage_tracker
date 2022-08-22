@@ -6,13 +6,15 @@
 #include <pthread.h>
 #include <stdlib.h>
 #include "thread.h"
+#include "buffer.h"
 
-struct Thread *thread_create(void *(*start)(struct Thread *), struct Buffer *buffer) {
+struct Thread *thread_create(void *(*start)(struct Thread *), struct Buffer *read_buffer, struct Buffer *write_buffer) {
     pthread_t thread_id;
     struct Thread *thread = malloc(sizeof(struct Thread));
     thread->start_routine = start;
     thread->thread_id = thread_id;
-    thread->buffer = buffer;
+    thread->read_buffer = read_buffer;
+    thread->write_buffer = write_buffer;
     return thread;
 }
 
@@ -52,4 +54,12 @@ void thread_time(struct Thread *thread, u8 reset) {
     } else {
         thread->timer++;
     }
+}
+
+void thread_write_to_buffer(struct Thread *thread, void *data) {
+    buffer_push(thread->write_buffer, data);
+}
+
+void *thread_read_from_buffer(struct Thread *thread) {
+    return buffer_pop(thread->read_buffer);
 }
