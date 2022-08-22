@@ -10,6 +10,9 @@ struct Statfile {
     FILE *file;
     char *file_name;
     u16 core_count;
+
+    //padding
+    u64 : 48;
 };
 
 static u16 read_core_count(struct Statfile *reader) {

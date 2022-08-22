@@ -23,7 +23,7 @@ static void reader_destroy() {
 static void *reader_thread_routine(struct Thread *used_thread) {
     u16 core_count = statfile_get_core_count(stat_reader);
 
-    struct CpuStats *stats = malloc(sizeof(struct CpuStats) * (unsigned long) core_count);
+    struct CpuStats *stats = malloc(sizeof(struct CpuStats) * core_count);
 
     while (thread_is_running(used_thread)) {
         thread_time(used_thread, TRUE);

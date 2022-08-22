@@ -8,10 +8,12 @@
 #include "queue.h"
 
 struct Queue {
-    u8 front, back, size;
-    u8 capacity;
     size_t element_size;
     void* data;
+    u8 front, back, size;
+    u8 capacity;
+    //padding
+    u32 : 32;
 };
 
 struct Queue *queue_create(u8 capacity, size_t size){

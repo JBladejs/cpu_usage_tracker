@@ -12,11 +12,13 @@
 struct Thread {
     pthread_t thread_id;
     char* name;
-    volatile sig_atomic_t running;
-    u8 timer;
     struct Buffer *read_buffer;
     struct Buffer *write_buffer;
     void *(*start_routine)(struct Thread *thread);
+    volatile sig_atomic_t running;
+    u8 timer;
+    //padding
+    u32 : 24;
 };
 
 struct Thread *
