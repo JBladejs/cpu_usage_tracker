@@ -33,7 +33,7 @@ static void *analyzer_thread_routine(struct Thread *used_thread) {
             for (int i = 0; i < core_count; ++i) {
                 usage[i] = usage_calculator_get_usage(&prevStat[i], &current[i]);
             }
-            printer_add_data(usage);
+            thread_write_to_buffer(used_thread, usage);
             free(prevStat);
             free(usage);
             prevStat = current;

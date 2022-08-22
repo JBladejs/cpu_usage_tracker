@@ -28,12 +28,12 @@ int main() {
     u16 core_count = statfile_get_core_count(statfile);
 
     struct Buffer *read_data = BUFFER_ARRAY_NEW(struct CpuStats, core_count, 5);
-    struct Buffer *analyzed_data = BUFFER_ARRAY_NEW(f32, core_count, 5);
+    struct Buffer *analyzed_data = BUFFER_ARRAY_NEW(f32, core_count, 10);
 
     logger_init();
     reader_init(statfile, read_data);
-    analyzer_init(core_count, read_data, NULL);
-    printer_init(core_count);
+    analyzer_init(core_count, read_data, analyzed_data);
+    printer_init(core_count, analyzed_data);
 
     struct Thread **threads = malloc(sizeof (struct Thread) * 4);
     threads[0] = reader_get_thread();

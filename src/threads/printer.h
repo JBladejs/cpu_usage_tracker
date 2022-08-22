@@ -6,9 +6,9 @@
 #define CPU_USAGE_TRACKER_PRINTER_H
 
 #include "../common.h"
+#include "buffer.h"
 
-void printer_init(u16 cores);
+void printer_init(u16 cores, struct Buffer *buffer);
 struct Thread *printer_get_thread();
-void printer_add_data(f32 *value);
 
 #endif //CPU_USAGE_TRACKER_PRINTER_H
