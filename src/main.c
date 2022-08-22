@@ -13,8 +13,6 @@
 #include "threads/printer.h"
 #include "threads/watchdog.h"
 
-
-
 int main(void) {
     u16 core_count;
     struct Statfile *statfile;
