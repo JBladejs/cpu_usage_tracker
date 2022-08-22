@@ -15,7 +15,7 @@ static void *watchdog_thread_routine(struct Thread *used_thread) {
     while (thread_is_running(used_thread)) {
         for (int i = 0; i < thread_num; ++i) {
             thread_time(watched_threads[i], FALSE);
-            if (thread_get_timer(watched_threads[i]) > 2) {
+            if (thread_get_timer(watched_threads[i]) > 5) {
                 logger_log("Watchdog: thread is not responding. Terminating program...");
                 program_terminate();
             }
