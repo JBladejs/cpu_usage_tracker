@@ -39,6 +39,7 @@ static void *analyzer_thread_routine(struct Thread *used_thread) {
             prevStat = current;
         } else {
             prevStat = buffer_pop(used_thread->buffer);
+            printf("Read data!\n");
 
         }
         sleep(1);

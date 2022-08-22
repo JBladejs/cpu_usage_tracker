@@ -20,11 +20,11 @@ static void printer_destroy() {
 
 static void *printer_thread_routine(struct Thread *used_thread) {
     queue = queue_create(255, core_count * sizeof (f32));
+    f32 *usage = queue_dequeue(queue);
     while (thread_is_running(used_thread)) {
         thread_time(used_thread, TRUE);
         system("clear");
         if (!queue_is_empty(queue)) {
-            f32 *usage = queue_dequeue(queue);
             for (int i = 0; i < core_count; ++i) {
                 if (i == 0) {
                     printf("Total CPU usage: %.2f%%\n", usage[0]);
@@ -32,10 +32,10 @@ static void *printer_thread_routine(struct Thread *used_thread) {
                     printf("Core %d usage: %.2f%%\n", i, usage[i]);
                 }
             }
-            free(usage);
         }
         sleep(1);
     }
+    free(usage);
     printer_destroy();
 }
 
