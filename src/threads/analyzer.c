@@ -41,7 +41,6 @@ static void *analyzer_thread_routine(struct Thread *used_thread) {
             prevStat = thread_read_from_buffer(thread);
 
         }
-        sleep(1);
     }
     destroy();
 }
