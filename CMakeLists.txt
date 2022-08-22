@@ -5,10 +5,10 @@ set(CMAKE_C_STANDARD 99)
 
 if (CMAKE_C_COMPILER_ID STREQUAL "Clang")
     message("Using Clang Compiler")
-#    add_compile_options(-Weverything)
+    add_compile_options(-Weverything)
 elseif(CMAKE_C_COMPILER_ID STREQUAL "GNU")
     message("Using GNU Compiler")
-#    add_compile_options(-Wall -Wextra)
+    add_compile_options(-Wall -Wextra)
 endif()
 
 include(CTest)
