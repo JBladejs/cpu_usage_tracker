@@ -21,6 +21,7 @@ struct Queue *queue_create(u8 capacity, size_t size){
     queue->front = queue->size = 0;
     queue->back = capacity - 1;
     queue->data = malloc(capacity * size);
+    return queue;
 }
 
 u8 queue_is_full(struct Queue* queue) {
