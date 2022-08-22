@@ -22,6 +22,7 @@ static struct ThreadManager *thread_manager_instance(void) {
 
     if (!is_initialized) {
         manager.index = 0;
+        is_initialized = TRUE;
     }
 
     return &manager;
@@ -38,10 +39,12 @@ static void thread_manager_add_thread(struct Thread *thread) {
 
 static void thread_manager_destroy_all(void) {
     struct ThreadManager *manager = thread_manager_instance();
-    for (s32 i = manager->index - 1; i >= 0; --i) {
+    s32 index = manager->index - 1;
+    if (index > 9) index = 9;
+    for (s32 i = index; i >= 0; --i) {
         thread_stop(manager->threads[i]);
     }
-    for (s32 i = manager->index - 1; i >= 0; --i) {
+    for (s32 i = index; i >= 0; --i) {
         thread_destroy(manager->threads[i]);
     }
 }
@@ -110,8 +113,6 @@ void *thread_read_from_buffer(struct Thread *thread) {
 
 void thread_destroy(struct Thread *thread) {
     thread_join(thread);
-    if (thread->read_buffer != NULL) buffer_destroy(thread->read_buffer);
-    if (thread->write_buffer != NULL) buffer_destroy(thread->write_buffer);
     free(thread);
 }
 

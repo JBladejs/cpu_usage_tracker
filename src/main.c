@@ -61,5 +61,8 @@ int main(void) {
     sleep(5);
     program_terminate();
 
+    buffer_destroy(read_data);
+    buffer_destroy(analyzed_data);
+
     return 0;
 }

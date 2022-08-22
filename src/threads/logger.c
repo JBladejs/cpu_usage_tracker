@@ -41,7 +41,3 @@ void logger_init(void) {
 void logger_log(char *message) {
     buffer_push(log_buffer, message);
 }
-
-struct Thread *logger_get_thread(void) {
-    return thread;
-}
