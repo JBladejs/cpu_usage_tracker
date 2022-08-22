@@ -22,6 +22,9 @@ void usage_test() {
 
     f64 usage = usage_calculator_get_usage(stats1, stats2);
     assert(fabs(usage - 71.4) < 0.1);
+
+    free(stats1);
+    free(stats2);
 }
 
 int main(int argc, char **argv) {
