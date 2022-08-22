@@ -63,4 +63,5 @@ int main(int argc, char *argv[]) {
     proc_stat_open_test();
     dummy_proc_stat_test();
     logfile_test();
+    return 0;
 }
