@@ -57,9 +57,10 @@ void thread_time(struct Thread *thread, u8 reset) {
 }
 
 void thread_write_to_buffer(struct Thread *thread, void *data) {
-    buffer_push(thread->write_buffer, data);
+    if (thread->write_buffer != NULL) buffer_push(thread->write_buffer, data);
 }
 
 void *thread_read_from_buffer(struct Thread *thread) {
-    return buffer_pop(thread->read_buffer);
+    if (thread->read_buffer != NULL)return buffer_pop(thread->read_buffer);
+    else return NULL;
 }
