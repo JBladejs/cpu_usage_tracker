@@ -8,9 +8,11 @@
 #include "thread.h"
 #include "buffer.h"
 
-struct Thread *thread_create(void *(*start)(struct Thread *), struct Buffer *read_buffer, struct Buffer *write_buffer) {
+struct Thread *
+thread_create(char *name, void *(*start)(struct Thread *), struct Buffer *read_buffer, struct Buffer *write_buffer) {
     pthread_t thread_id;
     struct Thread *thread = malloc(sizeof(struct Thread));
+    thread->name = name;
     thread->start_routine = start;
     thread->thread_id = thread_id;
     thread->read_buffer = read_buffer;

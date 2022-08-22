@@ -38,6 +38,6 @@ static void *reader_thread_routine(struct Thread *used_thread) {
 
 void reader_init(struct Statfile *statfile, struct Buffer *buffer) {
     stat_reader = statfile;
-    thread = thread_create(reader_thread_routine, NULL, buffer);
+    thread = thread_create("reader", reader_thread_routine, NULL, buffer);
     thread_run(thread, NULL);
 }

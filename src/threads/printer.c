@@ -37,7 +37,7 @@ struct Thread *printer_get_thread() {
 
 void printer_init(u16 cores, struct Buffer *buffer) {
     core_count = cores;
-    thread = thread_create(printer_thread_routine, buffer, NULL);
+    thread = thread_create("printer", printer_thread_routine, buffer, NULL);
     thread_run(thread, NULL);
 }
 

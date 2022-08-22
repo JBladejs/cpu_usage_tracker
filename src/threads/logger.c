@@ -32,7 +32,7 @@ void logger_init() {
         program_terminate();
     }
     log_buffer = BUFFER_NEW(char[255], 20);
-    thread = thread_create(logger_thread_routine, log_buffer, NULL);
+    thread = thread_create("logger", logger_thread_routine, log_buffer, NULL);
     thread_run(thread, NULL);
 }
 

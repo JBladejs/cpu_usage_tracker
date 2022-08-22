@@ -11,6 +11,7 @@
 
 struct Thread {
     pthread_t thread_id;
+    char* name;
     volatile sig_atomic_t running;
     u8 timer;
     struct Buffer *read_buffer;
@@ -18,7 +19,8 @@ struct Thread {
     void *(*start_routine)(struct Thread *thread);
 };
 
-struct Thread *thread_create(void *(*start)(struct Thread *), struct Buffer *read_buffer, struct Buffer *write_buffer);
+struct Thread *
+thread_create(char *name, void *(*start)(struct Thread *), struct Buffer *read_buffer, struct Buffer *write_buffer);
 void thread_run(struct Thread *thread, void *arg);
 void thread_time(struct Thread *thread, u8 reset);
 u8 thread_get_timer(struct Thread *thread);
