@@ -24,7 +24,7 @@ static u16 read_core_count(struct Statfile *reader) {
     core_count = 0;
     while (cpu_name[0] == 'c') {
         core_count++;
-        fscanf(reader->file, "%s %*ld %*ld %*ld %*ld %*ld %*ld %*ld %*ld %*ld %*ld", cpu_name);
+        fscanf(reader->file, "%s %*d %*d %*d %*d %*d %*d %*d %*d %*d %*d", cpu_name);
     }
 
     return --core_count;
@@ -49,7 +49,7 @@ void statfile_read(struct Statfile *reader, struct CpuStats *stat) {
     rewind(reader->file);
     for (int i = 0; i < reader->core_count; ++i) {
         struct CpuStats *current = &stat[i];
-        fscanf(reader->file, "%*s %ld %ld %ld %ld %ld %ld %ld %ld %*ld %*ld",
+        fscanf(reader->file, "%*s %ld %ld %ld %ld %ld %ld %ld %ld %*d %*d",
                &current->user, &current->nice, &current->system, &current->idle,
                &current->iowait, &current->irq, &current->softirq, &current->steal);
     }

@@ -24,10 +24,16 @@ int main(void) {
     memset (&action, 0, sizeof (struct sigaction));
 
     /* This flag generates a warning on a valid code */
+#ifdef __clang__
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wdisabled-macro-expansion"
+#endif
+
     action.sa_handler = (__sighandler_t) &program_handle_signal;
+
+#ifdef __clang__
 #pragma clang diagnostic pop
+#endif
 
     sigaction(SIGTERM, &action, NULL);
     sigaction(SIGINT, &action, NULL);
