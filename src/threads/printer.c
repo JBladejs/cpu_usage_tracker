@@ -6,7 +6,6 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include "printer.h"
-#include "../collections/queue.h"
 #include "thread.h"
 
 static u16 core_count = 1;
