@@ -7,11 +7,12 @@
 #include <stdlib.h>
 #include "thread.h"
 
-struct Thread *thread_create(void *(*start)(struct Thread *thread)) {
+struct Thread *thread_create(void *(*start)(struct Thread *), struct Buffer *buffer) {
     pthread_t thread_id;
     struct Thread *thread = malloc(sizeof(struct Thread));
     thread->start_routine = start;
     thread->thread_id = thread_id;
+    thread->buffer = buffer;
     return thread;
 }
 

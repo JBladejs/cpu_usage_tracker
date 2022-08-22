@@ -5,16 +5,11 @@
 #include "reader.h"
 #include <unistd.h>
 #include <malloc.h>
-#include "analyzer.h"
 #include "thread.h"
-#include "logger.h"
+#include "buffer.h"
 
 static struct Statfile *stat_reader = NULL;
 static struct Thread *thread = NULL;
-
-void reader_set_stat_reader(struct Statfile *reader) {
-    stat_reader = reader;
-}
 
 struct Thread *reader_get_thread() {
     return thread;
@@ -33,15 +28,17 @@ static void *reader_thread_routine(struct Thread *used_thread) {
     while (thread_is_running(used_thread)) {
         thread_time(used_thread, TRUE);
         statfile_read(stat_reader, stats);
-        analyzer_add_data(stats);
+
+        buffer_push(used_thread->buffer, stats);
+
         sleep(1);
     }
 
     reader_destroy();
 }
 
-void reader_init(struct Statfile *statfile) {
+void reader_init(struct Statfile *statfile, struct Buffer *buffer) {
     stat_reader = statfile;
-    thread = thread_create(reader_thread_routine);
+    thread = thread_create(reader_thread_routine, buffer);
     thread_run(thread, NULL);
 }

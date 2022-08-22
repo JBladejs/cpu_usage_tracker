@@ -13,6 +13,7 @@ struct Buffer *buffer_create(u8 capacity, size_t element_size) {
     pthread_mutex_init(&buffer->mutex, NULL);
     sem_init(&buffer->empty, 0, capacity);
     sem_init(&buffer->full, 0, 0);
+    return buffer;
 }
 
 void buffer_push(struct Buffer *buffer, void *data) {

@@ -7,8 +7,9 @@
 
 #include "../common.h"
 #include "../file_io/statfile.h"
+#include "buffer.h"
 
-void reader_init(struct Statfile *statfile);
+void reader_init(struct Statfile *statfile, struct Buffer *buffer);
 struct Thread *reader_get_thread();
 
 #endif //CPU_USAGE_TRACKER_READER_H

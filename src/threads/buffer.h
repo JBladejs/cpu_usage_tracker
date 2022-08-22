@@ -9,6 +9,7 @@
 #include "../common.h"
 
 #define BUFFER_NEW(type, capacity) buffer_create(capacity, sizeof(type))
+#define BUFFER_ARRAY_NEW(type, amount, capacity) buffer_create(capacity, sizeof(type) * amount)
 
 struct Buffer {
     struct Queue *queue;

@@ -6,9 +6,9 @@
 #define CPU_USAGE_TRACKER_ANALYZER_H
 
 #include "reader.h"
+#include "buffer.h"
 
-void analyzer_init(u16 cores);
-void analyzer_add_data(struct CpuStats *stat);
+void analyzer_init(u16 cores, struct Buffer *buffer);
 struct Thread *analyzer_get_thread();
 
 #endif //CPU_USAGE_TRACKER_ANALYZER_H
