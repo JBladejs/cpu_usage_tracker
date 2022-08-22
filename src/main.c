@@ -43,9 +43,6 @@ int main() {
 
     watchdog_init(threads, 3);
 
-    sleep(5);
-    program_terminate();
-
     thread_join(watchdog_get_thread());
     thread_join(reader_get_thread());
     thread_join(analyzer_get_thread());

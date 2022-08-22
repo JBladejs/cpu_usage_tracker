@@ -12,7 +12,7 @@
 
 static struct Logfile *logfile;
 static struct Thread *thread;
-static struct Buffer *log_buffer;
+static struct Buffer *log_buffer = NULL;
 
 static void *logger_thread_routine(struct Thread *used_thread) {
     logger_log("Program started.");
