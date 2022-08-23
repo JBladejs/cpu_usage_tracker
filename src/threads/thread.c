@@ -41,10 +41,10 @@ static void thread_manager_destroy_all(void) {
     struct ThreadManager *manager = thread_manager_instance();
     s32 index = manager->index - 1;
     if (index > 9) index = 9;
-    for (s32 i = index; i >= 0; --i) {
+    for (s32 i = 0; i < index; ++i) {
         thread_stop(manager->threads[i]);
     }
-    for (s32 i = index; i >= 0; --i) {
+    for (s32 i = 0; i < index; ++i) {
         thread_destroy(manager->threads[i]);
     }
 }
