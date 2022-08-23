@@ -10,32 +10,41 @@
 #include "thread.h"
 #include "../program.h"
 
-static struct Logfile *logfile;
-static struct Buffer *log_buffer = NULL;
+struct Logger {
+    struct Logfile *logfile;
+    struct Buffer *log_buffer;
+};
+
+static struct Logger *logger_instance(void) {
+    static struct Logger logger = {NULL, NULL};
+    return &logger;
+}
 
 static void *logger_thread_routine(struct Thread *used_thread) {
+    struct Logger* logger = logger_instance();
     logger_log("Program started.");
     while (thread_is_running(used_thread)) {
         char* message = thread_read_from_buffer(used_thread);
         if (message == NULL) break;
-        logfile_write(logfile, message);
+        logfile_write(logger->logfile, message);
         free(message);
     }
-    logfile_destroy(logfile);
-    buffer_destroy(log_buffer);
+    logfile_destroy(logger->logfile);
+    buffer_destroy(logger->log_buffer);
     return NULL;
 }
 
 void logger_init(void) {
-    logfile = logfile_init("cpu_usage_tracker.log");
-    if (logfile == NULL) {
+    struct Logger *logger = logger_instance();
+    logger->logfile = logfile_init("cpu_usage_tracker.log");
+    if (logger->logfile == NULL) {
         perror("Error: could not initialize logfile\n");
         program_terminate();
     }
-    log_buffer = BUFFER_NEW(char[255], 20);
-    thread_create("logger", logger_thread_routine, log_buffer, NULL);
+    logger->log_buffer = BUFFER_NEW(char[255], 20);
+    thread_create("logger", logger_thread_routine, logger->log_buffer, NULL);
 }
 
 void logger_log(char *message) {
-    buffer_push(log_buffer, message);
+    buffer_push(logger_instance()->log_buffer, message);
 }
