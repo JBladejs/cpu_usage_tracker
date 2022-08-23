@@ -4,8 +4,8 @@
 
 #include <string.h>
 #include "program.h"
-#include "threads/logger.h"
-#include "threads/thread.h"
+#include "threading/logger.h"
+#include "threading/thread.h"
 
 /* This flag generates a warning on a valid code */
 #ifdef __clang__

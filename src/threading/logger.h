@@ -9,6 +9,6 @@
 
 void logger_init(void);
 void logger_log(char* message);
-struct Thread *logger_get_thread(void);
+void logger_destroy(void);
 
 #endif //CPU_USAGE_TRACKER_LOGGER_H

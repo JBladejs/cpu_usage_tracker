@@ -25,6 +25,9 @@ static struct ThreadManager *thread_manager_instance(void) {
         manager.index = 0;
         manager.watchdog_thread = 10;
         is_initialized = TRUE;
+        for (int i = 0; i < 10; ++i) {
+            manager.threads[i] = NULL;
+        }
     }
 
     return &manager;
@@ -35,20 +38,21 @@ static s32 thread_manager_get_next_id(void) {
 }
 
 static void *watchdog_thread_routine(void *arg) {
-//    struct ThreadManager *manager = (struct ThreadManager*) arg;
-//    char message[255];
-//    while (1) {
-//        for (u32 i = 0; i < manager->active_threads; ++i) {
-//            if (thread_time(manager->threads[i], FALSE) > 3) {
-//                snprintf(message, 255,
-//                         "Watchdog: thread %s is not responding. Terminating program...",
-//                         manager->threads[i]->name);
-////                logger_log(message);
+    struct ThreadManager *manager = (struct ThreadManager*) arg;
+    char message[255];
+    while (1) {
+        for (u32 i = 0; i < manager->active_threads; ++i) {
+            if (manager->threads[i] == NULL) continue;
+            if (thread_time(manager->threads[i], FALSE) > 2) {
+                snprintf(message, 255,
+                         "Watchdog: thread %s is not responding. Terminating program...",
+                         manager->threads[i]->name);
+                logger_log(message);
 //                program_terminate();
-//                return NULL;
-//            }
-//        }
-//    }
+                return NULL;
+            }
+        }
+    }
 }
 
 static void thread_manager_add_thread(struct Thread *thread, s32 id) {
@@ -64,8 +68,9 @@ static void thread_manager_destroy_all(void) {
     s32 index = manager->index - 1;
     if (index > 9) index = 9;
     for (s32 i = 0; i < index; ++i) {
-        thread_stop(manager->threads[i]);
+        if (manager->threads[i] != NULL) thread_stop(manager->threads[i]);
     }
+    pthread_join(manager->watchdog_thread, NULL);
 }
 
 static void *thread_routine(void *arg) {
@@ -73,17 +78,20 @@ static void *thread_routine(void *arg) {
     return thread->start_routine(arg);
 }
 
-struct Thread *thread_create(char *name, void *(*start)(struct Thread *), struct Buffer *read_buffer, struct Buffer *write_buffer) {
+struct Thread *
+thread_create(char *name, void *(*start)(struct Thread *), struct Buffer *read_buffer, struct Buffer *write_buffer,
+              u8 tracked) {
     struct Thread *thread = malloc(sizeof(struct Thread));
     u8 result;
-    s32 initial_id = thread_manager_get_next_id();
+    s32 initial_id;
+    initial_id = thread_manager_get_next_id();
     thread->thread_id = (pthread_t) initial_id;
     thread->name = name;
     thread->timer = 0;
     thread->start_routine = start;
     thread->read_buffer = read_buffer;
     thread->write_buffer = write_buffer;
-
+    pthread_mutex_init(&thread->mutex, NULL);
     thread->running = TRUE;
     result = (u8) pthread_create(&(thread->thread_id), NULL, thread_routine, thread);
     if (result != 0) {
@@ -91,7 +99,7 @@ struct Thread *thread_create(char *name, void *(*start)(struct Thread *), struct
         exit(1);
     }
 
-    thread_manager_add_thread(thread, initial_id);
+    if (tracked) thread_manager_add_thread(thread, initial_id);
     return thread;
 }
 
@@ -104,6 +112,7 @@ void thread_stop(struct Thread *thread) {
     if (thread->read_buffer != NULL) buffer_end(thread->read_buffer);
     if (thread->write_buffer != NULL) buffer_end(thread->write_buffer);
     thread_join(thread);
+    pthread_mutex_destroy(&thread->mutex);
     free(thread);
 }
 
@@ -112,11 +121,13 @@ sig_atomic_t thread_is_running(struct Thread *thread) {
 }
 
 u8 thread_time(struct Thread *thread, u8 reset) {
+    pthread_mutex_lock(&thread->mutex);
     if (reset) {
         thread->timer = 0;
     } else {
         thread->timer++;
     }
+    pthread_mutex_unlock(&thread->mutex);
     return thread->timer;
 }
 
