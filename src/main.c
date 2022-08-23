@@ -19,10 +19,7 @@ int main(void) {
     struct Buffer *read_data, *analyzed_data;
     struct Thread **threads;
 
-    /* This flag generates a warning on a valid code */
-
     program_setup_signal_handling();
-
 
     statfile = statfile_initialize("/proc/stat");
     if (statfile == NULL) {
