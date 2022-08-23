@@ -28,8 +28,8 @@ typedef struct Thread {
     u32 : 24;
 } Thread;
 
-Thread *thread_create(char *name, void *(*start)(Thread *), Buffer *read_buffer,
-                      Buffer *write_buffer, u8 tracked, void *arg);
+Thread *thread_init(char *name, void *(*start)(Thread *), Buffer *read_buffer,
+                    Buffer *write_buffer, u8 tracked, void *arg);
 
 u8 thread_time(Thread *thread, u8 reset);
 
@@ -37,11 +37,11 @@ void thread_write_to_buffer(Thread *thread, void *data);
 
 void *thread_read_from_buffer(Thread *thread);
 
-void thread_join(Thread *thread);
-
 void *thread_get_arg(Thread *thread);
 
 sig_atomic_t thread_is_running(Thread *thread);
+
+void thread_join(Thread *thread);
 
 void thread_stop(Thread *thread);
 

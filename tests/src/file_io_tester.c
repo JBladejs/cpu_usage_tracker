@@ -10,14 +10,14 @@
 #include "../../src/file_io/logfile.h"
 
 static void proc_stat_open_test(void) {
-    Statfile *stats = statfile_initialize("/proc/stat");
+    Statfile *stats = statfile_init("/proc/stat");
     assert(stats != NULL);
     statfile_destroy(stats);
 }
 
 static void dummy_proc_stat_test(void) {
     CpuStats *cpu_stats;
-    Statfile *dummy = statfile_initialize("test_proc_stat");
+    Statfile *dummy = statfile_init("test_proc_stat");
     assert(statfile_get_core_count(dummy) == 4);
     cpu_stats = malloc(sizeof(CpuStats) * 4);
     statfile_read(dummy, cpu_stats);

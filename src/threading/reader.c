@@ -29,5 +29,5 @@ static void *reader_thread_routine(Thread *thread) {
 }
 
 void reader_init(Statfile *statfile, Buffer *buffer) {
-    thread_create("reader", reader_thread_routine, NULL, buffer, true, statfile);
+    thread_init("reader", reader_thread_routine, NULL, buffer, true, statfile);
 }

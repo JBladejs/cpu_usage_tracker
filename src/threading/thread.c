@@ -16,8 +16,8 @@ static void *thread_routine(void *arg) {
 }
 
 Thread *
-thread_create(char *name, void *(*start)(Thread *), Buffer *read_buffer,
-              Buffer *write_buffer, u8 tracked, void *arg) {
+thread_init(char *name, void *(*start)(Thread *), Buffer *read_buffer,
+            Buffer *write_buffer, u8 tracked, void *arg) {
     Thread *thread = malloc(sizeof(Thread));
     u8 result;
     s32 initial_id;

@@ -17,7 +17,7 @@ int main(void) {
 
     program_setup_signal_handling();
 
-    statfile = statfile_initialize("/proc/stat");
+    statfile = statfile_init("/proc/stat");
     if (statfile == NULL) {
         logger_log("Error: Could not open /proc/stat. Terminating program...");
         exit(1);

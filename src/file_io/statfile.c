@@ -20,7 +20,7 @@ static u16 read_core_count(Statfile *reader) {
     return --core_count;
 }
 
-Statfile *statfile_initialize(char *file_name) {
+Statfile *statfile_init(char *file_name) {
     Statfile *reader = malloc(sizeof(Statfile));
     reader->file_name = file_name;
     reader->file = fopen(file_name, "r");

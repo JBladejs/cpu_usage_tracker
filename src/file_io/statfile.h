@@ -28,7 +28,7 @@ typedef struct Statfile {
     u64 : 48;
 } Statfile;
 
-Statfile *statfile_initialize(char *file_name);
+Statfile *statfile_init(char *file_name);
 
 u16 statfile_get_core_count(Statfile *stats);
 
