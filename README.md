@@ -1,2 +1,2 @@
 ## CPU Usage Tracker
-CLI utility for tracking CPU usage.
+CLI utility for monitoring CPU usage.
