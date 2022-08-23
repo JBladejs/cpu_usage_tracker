@@ -18,9 +18,7 @@ struct Thread {
     volatile sig_atomic_t running;
     u8 timer;
     s32 initial_id;
-
-    //padding
-    u32 : 32;
+    pthread_mutex_t mutex;
 };
 
 struct Thread * thread_create(char *name, void *(*start)(struct Thread *),
