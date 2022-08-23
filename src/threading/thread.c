@@ -5,6 +5,7 @@
 #include <malloc.h>
 #include <pthread.h>
 #include <stdlib.h>
+#include <string.h>
 #include "thread.h"
 #include "buffer.h"
 #include "logger.h"

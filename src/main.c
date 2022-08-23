@@ -35,8 +35,8 @@ int main(void) {
     analyzer_init(core_count, read_data, analyzed_data);
     printer_init(core_count, analyzed_data);
 
-    sleep(20);
-    program_handle_signal();
+    sleep(5);
+//    program_handle_signal();
 
     logger_destroy();
     buffer_destroy(read_data);

@@ -4,6 +4,7 @@
 
 #include <stddef.h>
 #include <stdio.h>
+#include <unistd.h>
 #include "thread_manager.h"
 #include "thread.h"
 #include "logger.h"
@@ -40,10 +41,11 @@ static void *watchdog_thread_routine(void *arg) {
                          "Watchdog: thread %s is not responding. Terminating program...",
                          manager->threads[i]->name);
                 logger_log(message);
-//                program_terminate();
+                program_terminate();
                 return NULL;
             }
         }
+        sleep(1);
     }
 }
 
