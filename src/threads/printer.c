@@ -9,7 +9,6 @@
 #include "thread.h"
 
 static u16 core_count = 1;
-static struct Thread *thread = NULL;
 
 static void *printer_thread_routine(struct Thread *used_thread) {
     f32 *usage = NULL;
@@ -32,13 +31,9 @@ static void *printer_thread_routine(struct Thread *used_thread) {
     return NULL;
 }
 
-struct Thread *printer_get_thread(void) {
-    return thread;
-}
-
 void printer_init(u16 cores, struct Buffer *buffer) {
     core_count = cores;
-    thread = thread_create("printer", printer_thread_routine, buffer, NULL);
+    thread_create("printer", printer_thread_routine, buffer, NULL);
 }
 
 
