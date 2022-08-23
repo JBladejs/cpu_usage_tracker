@@ -6,6 +6,7 @@
 #define CPU_USAGE_TRACKER_THREAD_MANAGER_H
 
 #include <bits/pthreadtypes.h>
+#include <bits/types/sig_atomic_t.h>
 #include "../common.h"
 
 struct ThreadManager {
@@ -13,6 +14,10 @@ struct ThreadManager {
     pthread_t watchdog_thread;
     s32 index;
     u32 active_threads;
+    volatile sig_atomic_t running;
+
+    //padding
+    u32 : 32;
 };
 
 struct ThreadManager *thread_manager_instance(void);

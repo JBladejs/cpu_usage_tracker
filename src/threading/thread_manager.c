@@ -16,6 +16,7 @@ struct ThreadManager *thread_manager_instance(void) {
 
     if (!is_initialized) {
         manager.index = 0;
+        manager.running = FALSE;
         manager.watchdog_thread = 10;
         is_initialized = TRUE;
         for (int i = 0; i < 10; ++i) {
@@ -33,7 +34,7 @@ s32 thread_manager_get_next_id(void) {
 static void *watchdog_thread_routine(void *arg) {
     struct ThreadManager *manager = (struct ThreadManager*) arg;
     char message[255];
-    while (1) {
+    while (manager->running) {
         for (u32 i = 0; i < manager->active_threads; ++i) {
             if (manager->threads[i] == NULL) continue;
             if (thread_time(manager->threads[i], FALSE) > 2) {
@@ -53,15 +54,18 @@ void thread_manager_add_thread(struct Thread *thread, s32 id) {
     struct ThreadManager *manager = thread_manager_instance();
     if (id > 9) return;
     manager->threads[id] = thread;
-    if (manager->active_threads++ == 0)
+    if (manager->active_threads++ == 0){
+        manager->running = TRUE;
         pthread_create(&manager->watchdog_thread, NULL, watchdog_thread_routine, manager);
+    }
 }
 
 void thread_manager_destroy_all(void) {
     struct ThreadManager *manager = thread_manager_instance();
-    s32 index = manager->index - 1;
+    u32 index = manager->active_threads - 1;
+    thread_manager_instance()->running = FALSE;
     if (index > 9) index = 9;
-    for (s32 i = 0; i < index; ++i) {
+    for (u32 i = 0; i < index; ++i) {
         if (manager->threads[i] != NULL) thread_stop(manager->threads[i]);
     }
 }
