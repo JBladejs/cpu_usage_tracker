@@ -7,10 +7,10 @@
 #include <unistd.h>
 #include "program.h"
 #include "file_io/statfile.h"
-#include "threads/logger.h"
-#include "threads/reader.h"
-#include "threads/analyzer.h"
-#include "threads/printer.h"
+#include "threading/logger.h"
+#include "threading/reader.h"
+#include "threading/analyzer.h"
+#include "threading/printer.h"
 
 int main(void) {
     u16 core_count;
