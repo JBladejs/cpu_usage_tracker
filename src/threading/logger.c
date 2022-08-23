@@ -22,11 +22,11 @@ static struct Logger *logger_instance(void) {
     return &logger;
 }
 
-static void *logger_thread_routine(struct Thread *used_thread) {
+static void *logger_thread_routine(struct Thread *thread) {
     struct Logger* logger = logger_instance();
     logger_log("Program started.");
-    while (thread_is_running(used_thread)) {
-        char* message = thread_read_from_buffer(used_thread);
+    while (thread_is_running(thread)) {
+        char* message = thread_read_from_buffer(thread);
         if (message == NULL) break;
         logfile_write(logger->logfile, message);
         free(message);

@@ -13,12 +13,12 @@
 
 static u16 core_count = 1;
 
-static void *analyzer_thread_routine(struct Thread *used_thread) {
+static void *analyzer_thread_routine(struct Thread *thread) {
     struct CpuStats *prev_stat = NULL;
-    while (thread_is_running(used_thread)) {
-        thread_time(used_thread, TRUE);
+    while (thread_is_running(thread)) {
+        thread_time(thread, TRUE);
         if (prev_stat != NULL) {
-            struct CpuStats *current = thread_read_from_buffer(used_thread);
+            struct CpuStats *current = thread_read_from_buffer(thread);
             f32 *usage;
             if (current == NULL) {
                 break;
@@ -27,12 +27,12 @@ static void *analyzer_thread_routine(struct Thread *used_thread) {
             for (int i = 0; i < core_count; ++i) {
                 usage[i] = usage_calculator_get_usage(&prev_stat[i], &current[i]);
             }
-            thread_write_to_buffer(used_thread, usage);
+            thread_write_to_buffer(thread, usage);
             free(prev_stat);
             free(usage);
             prev_stat = current;
         } else {
-            prev_stat = thread_read_from_buffer(used_thread);
+            prev_stat = thread_read_from_buffer(thread);
         }
         sleep(1);
     }

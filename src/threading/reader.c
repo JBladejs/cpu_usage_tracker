@@ -16,16 +16,16 @@ static void reader_destroy(void) {
     stat_reader = NULL;
 }
 
-static void *reader_thread_routine(struct Thread *used_thread) {
+static void *reader_thread_routine(struct Thread *thread) {
     u16 core_count = statfile_get_core_count(stat_reader);
 
     struct CpuStats *stats = malloc(sizeof(struct CpuStats) * core_count);
 
-    while (thread_is_running(used_thread)) {
-        thread_time(used_thread, TRUE);
+    while (thread_is_running(thread)) {
+        thread_time(thread, TRUE);
         statfile_read(stat_reader, stats);
 
-        thread_write_to_buffer(used_thread, stats);
+        thread_write_to_buffer(thread, stats);
         sleep(1);
     }
 
