@@ -7,6 +7,7 @@
 #include "thread_manager.h"
 #include "thread.h"
 #include "logger.h"
+#include "../program.h"
 
 struct ThreadManager *thread_manager_instance(void) {
     static struct ThreadManager manager;
@@ -61,5 +62,8 @@ void thread_manager_destroy_all(void) {
     for (s32 i = 0; i < index; ++i) {
         if (manager->threads[i] != NULL) thread_stop(manager->threads[i]);
     }
-    pthread_join(manager->watchdog_thread, NULL);
+}
+
+void thread_manager_join(void) {
+    pthread_join(thread_manager_instance()->watchdog_thread, NULL);
 }
