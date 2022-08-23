@@ -3,7 +3,6 @@
 //
 
 #include <string.h>
-#include <signal.h>
 #include <stdlib.h>
 #include <unistd.h>
 #include "program.h"
@@ -17,25 +16,13 @@
 int main(void) {
     u16 core_count;
     struct Statfile *statfile;
-    struct sigaction action;
     struct Buffer *read_data, *analyzed_data;
     struct Thread **threads;
-    memset (&action, 0, sizeof (struct sigaction));
 
     /* This flag generates a warning on a valid code */
-#ifdef __clang__
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wdisabled-macro-expansion"
-#endif
 
-    action.sa_handler = (__sighandler_t) &program_handle_signal;
+    program_setup_signal_handling();
 
-#ifdef __clang__
-#pragma clang diagnostic pop
-#endif
-
-    sigaction(SIGTERM, &action, NULL);
-    sigaction(SIGINT, &action, NULL);
 
     statfile = statfile_initialize("/proc/stat");
     if (statfile == NULL) {
