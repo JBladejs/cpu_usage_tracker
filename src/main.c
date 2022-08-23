@@ -36,7 +36,7 @@ int main(void) {
     printer_init(core_count, analyzed_data);
 
     sleep(5);
-    program_handle_signal();
+//    program_handle_signal();
 
     logger_destroy();
     buffer_destroy(read_data);

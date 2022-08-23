@@ -5,8 +5,36 @@
 #ifndef CPU_USAGE_TRACKER_PROGRAM_H
 #define CPU_USAGE_TRACKER_PROGRAM_H
 
-void program_setup_signal_handling(void);
-void program_handle_signal(void);
-void program_terminate(void);
+#include <string.h>
+#include "program.h"
+#include "threading/logger.h"
+#include "threading/thread.h"
+
+static inline void program_terminate(void) {
+    thread_stop_all();
+}
+
+static inline void program_handle_signal(void) {
+    logger_log("Signal received. Terminating program...");
+    program_terminate();
+}
+
+/* This flag generates a warning on a valid code */
+#ifdef __clang__
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdisabled-macro-expansion"
+#endif
+static inline void program_setup_signal_handling(void) {
+    struct sigaction action;
+
+    memset (&action, 0, sizeof (struct sigaction));
+    action.sa_handler = (__sighandler_t) &program_handle_signal;
+
+    sigaction(SIGTERM, &action, NULL);
+    sigaction(SIGINT, &action, NULL);
+}
+#ifdef __clang__
+#pragma clang diagnostic pop
+#endif
 
 #endif //CPU_USAGE_TRACKER_PROGRAM_H
