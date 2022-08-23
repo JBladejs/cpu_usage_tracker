@@ -78,7 +78,3 @@ void *thread_read_from_buffer(struct Thread *thread) {
     if (thread->read_buffer != NULL) return buffer_pop(thread->read_buffer);
     else return NULL;
 }
-
-void thread_stop_all(void) {
-    thread_manager_destroy_all();
-}

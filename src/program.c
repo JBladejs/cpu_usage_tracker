@@ -6,6 +6,7 @@
 #include "program.h"
 #include "threading/logger.h"
 #include "threading/thread.h"
+#include "threading/thread_manager.h"
 
 /* This flag generates a warning on a valid code */
 #ifdef __clang__
@@ -31,5 +32,5 @@ void program_handle_signal(void) {
 }
 
 void program_terminate(void) {
-    thread_stop_all();
+    thread_manager_destroy_all();
 }

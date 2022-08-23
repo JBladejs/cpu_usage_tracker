@@ -29,6 +29,5 @@ void *thread_read_from_buffer(struct Thread *thread);
 void thread_join(struct Thread *thread);
 sig_atomic_t thread_is_running(struct Thread *thread);
 void thread_stop(struct Thread *thread);
-void thread_stop_all(void);
 
 #endif //CPU_USAGE_TRACKER_THREAD_H
