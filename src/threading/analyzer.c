@@ -42,5 +42,5 @@ static void *analyzer_thread_routine(struct Thread *thread) {
 
 void analyzer_init(u16 cores, struct Buffer *read_buffer, struct Buffer *write_buffer) {
     core_count = cores;
-    thread_create("analyzer", analyzer_thread_routine, read_buffer, write_buffer, true);
+    thread_create("analyzer", analyzer_thread_routine, read_buffer, write_buffer, true, NULL);
 }

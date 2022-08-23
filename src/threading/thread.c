@@ -10,15 +10,14 @@
 #include "buffer.h"
 #include "thread_manager.h"
 
-
 static void *thread_routine(void *arg) {
     struct Thread *thread = (struct Thread *) arg;
     return thread->start_routine(arg);
 }
 
 struct Thread *
-thread_create(char *name, void *(*start)(struct Thread *), struct Buffer *read_buffer, struct Buffer *write_buffer,
-              u8 tracked) {
+thread_create(char *name, void *(*start)(struct Thread *), struct Buffer *read_buffer,
+              struct Buffer *write_buffer, u8 tracked, void *arg) {
     struct Thread *thread = malloc(sizeof(struct Thread));
     u8 result;
     s32 initial_id;

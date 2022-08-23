@@ -26,8 +26,8 @@ struct Thread {
     u32 : 24;
 };
 
-struct Thread *thread_create(char *name, void *(*start)(struct Thread *),
-                             struct Buffer *read_buffer, struct Buffer *write_buffer, u8 tracked);
+struct Thread *thread_create(char *name, void *(*start)(struct Thread *), struct Buffer *read_buffer,
+                             struct Buffer *write_buffer, u8 tracked, void *arg);
 
 u8 thread_time(struct Thread *thread, u8 reset);
 

@@ -34,7 +34,7 @@ static void *printer_thread_routine(struct Thread *thread) {
 
 void printer_init(u16 cores, struct Buffer *buffer) {
     core_count = cores;
-    thread_create("printer", printer_thread_routine, buffer, NULL, true);
+    thread_create("printer", printer_thread_routine, buffer, NULL, true, NULL);
 }
 
 

@@ -44,7 +44,7 @@ void logger_init(void) {
         program_terminate();
     }
     logger->log_buffer = BUFFER_NEW(char[255], 20);
-    logger->thread = thread_create("logger", logger_thread_routine, logger->log_buffer, NULL, false);
+    logger->thread = thread_create("logger", logger_thread_routine, logger->log_buffer, NULL, false, NULL);
 }
 
 void logger_log(char *message) {
