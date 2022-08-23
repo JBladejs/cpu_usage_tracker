@@ -20,7 +20,7 @@ struct Buffer *buffer_create(u8 capacity, size_t element_size) {
 void buffer_push(struct Buffer *buffer, void *data) {
     sem_wait(&buffer->empty);
     pthread_mutex_lock(&buffer->mutex);
-    if (!buffer->active) return;
+//    if (!buffer->active) return;
 
     queue_enqueue(buffer->queue, data);
 
@@ -32,7 +32,7 @@ void *buffer_pop(struct Buffer *buffer) {
     void *data;
     sem_wait(&buffer->full);
     pthread_mutex_lock(&buffer->mutex);
-    if (!buffer->active) return NULL;
+//    if (!buffer->active) return NULL;
 
     data = queue_dequeue(buffer->queue);
 

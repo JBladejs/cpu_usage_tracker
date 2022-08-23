@@ -59,7 +59,7 @@ int main(void) {
 
     watchdog_init(threads, 3);
     sleep(20);
-    program_terminate();
+//    program_terminate();
 
     buffer_destroy(read_data);
     buffer_destroy(analyzed_data);
