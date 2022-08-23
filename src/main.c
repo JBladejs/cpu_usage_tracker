@@ -4,7 +4,6 @@
 
 #include <string.h>
 #include <stdlib.h>
-#include <unistd.h>
 #include "program.h"
 #include "file_io/statfile.h"
 #include "threading/logger.h"
@@ -26,7 +25,6 @@ int main(void) {
         exit(1);
     }
     core_count = statfile_get_core_count(statfile);
-
 
     read_data = BUFFER_ARRAY_NEW(struct CpuStats, core_count, 5);
     analyzed_data = BUFFER_ARRAY_NEW(f32, core_count, 10);
