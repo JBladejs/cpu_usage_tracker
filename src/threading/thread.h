@@ -17,12 +17,15 @@ struct Thread {
     struct Buffer *write_buffer;
 
     void *(*start_routine)(struct Thread *thread);
+    void* arg;
+
 
     volatile sig_atomic_t running;
     u8 timer;
 
     //padding
     u32 : 24;
+
 };
 
 struct Thread *thread_create(char *name, void *(*start)(struct Thread *),

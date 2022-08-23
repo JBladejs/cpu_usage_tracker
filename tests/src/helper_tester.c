@@ -3,10 +3,12 @@
 //
 
 #include <malloc.h>
-#include <math.h>
 #include <assert.h>
+#include <math.h>
 #include "../../src/file_io/statfile.h"
 #include "../../src/helper/usage_calculator.h"
+
+#define UNUSED(x) ((void)(x))
 
 static void usage_test(void) {
     struct CpuStats *stats1 = calloc(1, sizeof(struct CpuStats));
@@ -22,6 +24,7 @@ static void usage_test(void) {
     stats2->softirq = 50;
 
     usage = (f64) usage_calculator_get_usage(stats1, stats2);
+    UNUSED(usage);
     assert(fabs(usage - 71.4) < 0.1);
 
     free(stats1);
