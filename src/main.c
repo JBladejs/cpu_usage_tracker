@@ -58,7 +58,7 @@ int main(void) {
     threads[2] = printer_get_thread();
 
     watchdog_init(threads, 3);
-    sleep(5);
+    sleep(20);
     program_terminate();
 
     buffer_destroy(read_data);
