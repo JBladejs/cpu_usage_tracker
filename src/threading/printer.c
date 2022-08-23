@@ -5,6 +5,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
+#include <stdbool.h>
 #include "printer.h"
 #include "thread.h"
 
@@ -33,7 +34,7 @@ static void *printer_thread_routine(struct Thread *used_thread) {
 
 void printer_init(u16 cores, struct Buffer *buffer) {
     core_count = cores;
-    thread_create("printer", printer_thread_routine, buffer, NULL);
+    thread_create("printer", printer_thread_routine, buffer, NULL, true);
 }
 
 

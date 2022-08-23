@@ -5,6 +5,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
+#include <stdbool.h>
 #include "logger.h"
 #include "../file_io/logfile.h"
 #include "thread.h"
@@ -13,10 +14,11 @@
 struct Logger {
     struct Logfile *logfile;
     struct Buffer *log_buffer;
+    struct Thread* thread;
 };
 
 static struct Logger *logger_instance(void) {
-    static struct Logger logger = {NULL, NULL};
+    static struct Logger logger = {NULL, NULL, NULL};
     return &logger;
 }
 
@@ -42,9 +44,13 @@ void logger_init(void) {
         program_terminate();
     }
     logger->log_buffer = BUFFER_NEW(char[255], 20);
-    thread_create("logger", logger_thread_routine, logger->log_buffer, NULL);
+    logger->thread = thread_create("logger", logger_thread_routine, logger->log_buffer, NULL, false);
 }
 
 void logger_log(char *message) {
     buffer_push(logger_instance()->log_buffer, message);
+}
+
+void logger_destroy(void) {
+    thread_stop(logger_instance()->thread);
 }

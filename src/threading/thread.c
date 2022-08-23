@@ -25,6 +25,9 @@ static struct ThreadManager *thread_manager_instance(void) {
         manager.index = 0;
         manager.watchdog_thread = 10;
         is_initialized = TRUE;
+        for (int i = 0; i < 10; ++i) {
+            manager.threads[i] = NULL;
+        }
     }
 
     return &manager;
@@ -64,7 +67,7 @@ static void thread_manager_destroy_all(void) {
     s32 index = manager->index - 1;
     if (index > 9) index = 9;
     for (s32 i = 0; i < index; ++i) {
-        thread_stop(manager->threads[i]);
+        if (manager->threads[i] != NULL) thread_stop(manager->threads[i]);
     }
 }
 
@@ -73,10 +76,13 @@ static void *thread_routine(void *arg) {
     return thread->start_routine(arg);
 }
 
-struct Thread *thread_create(char *name, void *(*start)(struct Thread *), struct Buffer *read_buffer, struct Buffer *write_buffer) {
+struct Thread *
+thread_create(char *name, void *(*start)(struct Thread *), struct Buffer *read_buffer, struct Buffer *write_buffer,
+              u8 tracked) {
     struct Thread *thread = malloc(sizeof(struct Thread));
     u8 result;
-    s32 initial_id = thread_manager_get_next_id();
+    s32 initial_id;
+    initial_id = thread_manager_get_next_id();
     thread->thread_id = (pthread_t) initial_id;
     thread->name = name;
     thread->timer = 0;
@@ -91,7 +97,7 @@ struct Thread *thread_create(char *name, void *(*start)(struct Thread *), struct
         exit(1);
     }
 
-    thread_manager_add_thread(thread, initial_id);
+    if (tracked) thread_manager_add_thread(thread, initial_id);
     return thread;
 }
 

@@ -5,6 +5,7 @@
 #include "reader.h"
 #include <unistd.h>
 #include <malloc.h>
+#include <stdbool.h>
 #include "thread.h"
 #include "buffer.h"
 
@@ -35,5 +36,5 @@ static void *reader_thread_routine(struct Thread *used_thread) {
 
 void reader_init(struct Statfile *statfile, struct Buffer *buffer) {
     stat_reader = statfile;
-    thread_create("reader", reader_thread_routine, NULL, buffer);
+    thread_create("reader", reader_thread_routine, NULL, buffer, true);
 }

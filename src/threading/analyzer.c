@@ -4,6 +4,7 @@
 
 #include <unistd.h>
 #include <malloc.h>
+#include <stdbool.h>
 #include "reader.h"
 #include "analyzer.h"
 #include "thread.h"
@@ -41,5 +42,5 @@ static void *analyzer_thread_routine(struct Thread *used_thread) {
 
 void analyzer_init(u16 cores, struct Buffer *read_buffer, struct Buffer *write_buffer) {
     core_count = cores;
-    thread_create("analyzer", analyzer_thread_routine, read_buffer, write_buffer);
+    thread_create("analyzer", analyzer_thread_routine, read_buffer, write_buffer, true);
 }
