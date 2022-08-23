@@ -32,7 +32,7 @@ static void *printer_thread_routine(struct Thread *used_thread) {
     return NULL;
 }
 
-struct Thread *printer_get_thread() {
+struct Thread *printer_get_thread(void) {
     return thread;
 }
 

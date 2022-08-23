@@ -7,13 +7,14 @@
 #include <stdlib.h>
 #include "thread.h"
 #include "buffer.h"
+#include "logger.h"
+#include "../program.h"
 
 struct ThreadManager {
     struct Thread *threads[10];
+    pthread_t watchdog_thread;
     s32 index;
-
-    //padding
-    u32 : 32;
+    u32 active_threads;
 };
 
 static struct ThreadManager *thread_manager_instance(void) {
@@ -22,6 +23,7 @@ static struct ThreadManager *thread_manager_instance(void) {
 
     if (!is_initialized) {
         manager.index = 0;
+        manager.watchdog_thread = 10;
         is_initialized = TRUE;
     }
 
@@ -32,9 +34,29 @@ static s32 thread_manager_get_next_id(void) {
     return thread_manager_instance()->index++;
 }
 
+static void *watchdog_thread_routine(void *arg) {
+//    struct ThreadManager *manager = (struct ThreadManager*) arg;
+//    char message[255];
+//    while (1) {
+//        for (u32 i = 0; i < manager->active_threads; ++i) {
+//            if (thread_time(manager->threads[i], FALSE) > 3) {
+//                snprintf(message, 255,
+//                         "Watchdog: thread %s is not responding. Terminating program...",
+//                         manager->threads[i]->name);
+////                logger_log(message);
+//                program_terminate();
+//                return NULL;
+//            }
+//        }
+//    }
+}
+
 static void thread_manager_add_thread(struct Thread *thread, s32 id) {
+    struct ThreadManager *manager = thread_manager_instance();
     if (id > 9) return;
-    thread_manager_instance()->threads[id] = thread;
+    manager->threads[id] = thread;
+    if (manager->active_threads++ == 0)
+        pthread_create(&manager->watchdog_thread, NULL, watchdog_thread_routine, manager);
 }
 
 static void thread_manager_destroy_all(void) {
@@ -89,16 +111,13 @@ sig_atomic_t thread_is_running(struct Thread *thread) {
     return thread->running;
 }
 
-u8 thread_get_timer(struct Thread *thread) {
-    return thread->timer;
-}
-
-void thread_time(struct Thread *thread, u8 reset) {
+u8 thread_time(struct Thread *thread, u8 reset) {
     if (reset) {
         thread->timer = 0;
     } else {
         thread->timer++;
     }
+    return thread->timer;
 }
 
 void thread_write_to_buffer(struct Thread *thread, void *data) {
