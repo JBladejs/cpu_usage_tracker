@@ -20,7 +20,7 @@ static void queue_test(void) {
     queue_enqueue(queue, &data[0]);
     assert(!queue_is_empty(queue));
     assert(!queue_is_full(queue));
-    assert(*(int*)queue_dequeue(queue) == 1);
+    assert(*(int *) queue_dequeue(queue) == 1);
     assert(queue_is_empty(queue));
 
     queue_enqueue(queue, &data[1]);
@@ -31,13 +31,13 @@ static void queue_test(void) {
 
     assert(!queue_is_empty(queue));
     assert(queue_is_full(queue));
-    assert(*(int*)queue_dequeue(queue) == 2);
+    assert(*(int *) queue_dequeue(queue) == 2);
     assert(!queue_is_full(queue));
     assert(!queue_is_empty(queue));
-    assert(*(int*)queue_dequeue(queue) == 3);
-    assert(*(int*)queue_dequeue(queue) == 4);
-    assert(*(int*)queue_dequeue(queue) == 5);
-    assert(*(int*)queue_dequeue(queue) == 6);
+    assert(*(int *) queue_dequeue(queue) == 3);
+    assert(*(int *) queue_dequeue(queue) == 4);
+    assert(*(int *) queue_dequeue(queue) == 5);
+    assert(*(int *) queue_dequeue(queue) == 6);
     assert(queue_is_empty(queue));
 
     queue_destroy(queue);

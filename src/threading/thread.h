@@ -17,7 +17,8 @@ struct Thread {
     struct Buffer *write_buffer;
 
     void *(*start_routine)(struct Thread *thread);
-    void* arg;
+
+    void *arg;
 
     volatile sig_atomic_t running;
     u8 timer;

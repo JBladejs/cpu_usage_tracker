@@ -10,7 +10,9 @@
 #include "buffer.h"
 
 void reader_init(struct Statfile *statfile, struct Buffer *buffer);
+
 void printer_init(u16 cores, struct Buffer *buffer);
+
 void analyzer_init(u16 cores, struct Buffer *read_buffer, struct Buffer *write_buffer);
 
 #endif //CPU_USAGE_TRACKER_MAIN_THREADS_H
