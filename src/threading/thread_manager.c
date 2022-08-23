@@ -48,6 +48,7 @@ static void *watchdog_thread_routine(void *arg) {
         }
         sleep(1);
     }
+    return NULL;
 }
 
 void thread_manager_add_thread(struct Thread *thread, s32 id) {
