@@ -39,6 +39,7 @@ static void *logger_thread_routine(Thread *thread) {
 void logger_init(void) {
     Logger *logger = logger_instance();
     ThreadArg arg;
+    arg.core_count = 0;
     logger->logfile = logfile_init("cpu_usage_tracker.log");
     if (logger->logfile == NULL) {
         perror("Error: could not initialize logfile\n");
