@@ -23,7 +23,7 @@ static void *analyzer_thread_routine(struct Thread *thread) {
             if (current == NULL) {
                 break;
             }
-            usage = malloc(sizeof (f32) * core_count);
+            usage = malloc(sizeof(f32) * core_count);
             for (int i = 0; i < core_count; ++i) {
                 usage[i] = usage_calculator_get_usage(&prev_stat[i], &current[i]);
             }

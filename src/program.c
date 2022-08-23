@@ -13,15 +13,17 @@
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wdisabled-macro-expansion"
 #endif
+
 void program_setup_signal_handling(void) {
     struct sigaction action;
 
-    memset (&action, 0, sizeof (struct sigaction));
+    memset(&action, 0, sizeof(struct sigaction));
     action.sa_handler = (__sighandler_t) &program_handle_signal;
 
     sigaction(SIGTERM, &action, NULL);
     sigaction(SIGINT, &action, NULL);
 }
+
 #ifdef __clang__
 #pragma clang diagnostic pop
 #endif

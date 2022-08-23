@@ -19,9 +19,13 @@ struct CpuStats {
 };
 
 struct Statfile;
+
 struct Statfile *statfile_initialize(char *file_name);
+
 u16 statfile_get_core_count(struct Statfile *stats);
+
 void statfile_read(struct Statfile *stats, struct CpuStats *stat);
+
 void statfile_destroy(struct Statfile *stats);
 
 #endif //CPU_USAGE_TRACKER_STATFILE_H

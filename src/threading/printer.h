@@ -9,6 +9,7 @@
 #include "buffer.h"
 
 void printer_init(u16 cores, struct Buffer *buffer);
+
 struct Thread *printer_get_thread(void);
 
 #endif //CPU_USAGE_TRACKER_PRINTER_H

@@ -16,7 +16,9 @@ struct Logfile {
 };
 
 struct Logfile *logfile_init(char *file_name);
+
 void logfile_write(struct Logfile *logfile, char *message);
+
 void logfile_destroy(struct Logfile *logfile);
 
 

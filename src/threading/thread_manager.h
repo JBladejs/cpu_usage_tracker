@@ -21,9 +21,13 @@ struct ThreadManager {
 };
 
 struct ThreadManager *thread_manager_instance(void);
+
 s32 thread_manager_get_next_id(void);
+
 void thread_manager_add_thread(struct Thread *thread, s32 id);
+
 void thread_manager_join(void);
+
 void thread_manager_destroy_all(void);
 
 #endif //CPU_USAGE_TRACKER_THREAD_MANAGER_H

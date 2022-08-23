@@ -32,7 +32,7 @@ s32 thread_manager_get_next_id(void) {
 }
 
 static void *watchdog_thread_routine(void *arg) {
-    struct ThreadManager *manager = (struct ThreadManager*) arg;
+    struct ThreadManager *manager = (struct ThreadManager *) arg;
     char message[255];
     while (manager->running) {
         for (u32 i = 0; i < manager->active_threads; ++i) {
@@ -55,7 +55,7 @@ void thread_manager_add_thread(struct Thread *thread, s32 id) {
     struct ThreadManager *manager = thread_manager_instance();
     if (id > 9) return;
     manager->threads[id] = thread;
-    if (manager->active_threads++ == 0){
+    if (manager->active_threads++ == 0) {
         manager->running = TRUE;
         pthread_create(&manager->watchdog_thread, NULL, watchdog_thread_routine, manager);
     }

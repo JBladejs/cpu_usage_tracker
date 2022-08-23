@@ -9,15 +9,15 @@
 
 struct Queue {
     size_t element_size;
-    void* data;
+    void *data;
     u8 front, back, size;
     u8 capacity;
     //padding
     u32 : 32;
 };
 
-struct Queue *queue_create(u8 capacity, size_t size){
-    struct Queue* queue = (struct Queue*) malloc(sizeof(struct Queue));
+struct Queue *queue_create(u8 capacity, size_t size) {
+    struct Queue *queue = (struct Queue *) malloc(sizeof(struct Queue));
     queue->capacity = capacity;
     queue->element_size = size;
     queue->front = queue->size = 0;
@@ -26,30 +26,30 @@ struct Queue *queue_create(u8 capacity, size_t size){
     return queue;
 }
 
-u8 queue_is_full(struct Queue* queue) {
+u8 queue_is_full(struct Queue *queue) {
     return queue->size == queue->capacity;
 }
 
-u8 queue_is_empty(struct Queue* queue) {
+u8 queue_is_empty(struct Queue *queue) {
     return queue->size == 0;
 }
 
-void queue_enqueue(struct Queue *queue, void* data) {
+void queue_enqueue(struct Queue *queue, void *data) {
     if (queue_is_full(queue)) {
         return;
     }
     queue->back = (queue->back + 1) % queue->capacity;
     queue->size++;
-    memcpy((s8*) queue->data + queue->back * queue->element_size, data, queue->element_size);
+    memcpy((s8 *) queue->data + queue->back * queue->element_size, data, queue->element_size);
 }
 
 void *queue_dequeue(struct Queue *queue) {
-    void* data;
+    void *data;
     if (queue_is_empty(queue)) {
         return NULL;
     }
     data = malloc(queue->element_size);
-    memcpy(data, (s8*) queue->data + queue->front * queue->element_size, queue->element_size);
+    memcpy(data, (s8 *) queue->data + queue->front * queue->element_size, queue->element_size);
     queue->front = (queue->front + 1) % queue->capacity;
     queue->size--;
     return data;
