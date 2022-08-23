@@ -42,6 +42,7 @@ static void *watchdog_thread_routine(void *arg) {
 //    char message[255];
 //    while (1) {
 //        for (u32 i = 0; i < manager->active_threads; ++i) {
+//            if (manager->active_threads[i] == NULL) continue;
 //            if (thread_time(manager->threading[i], FALSE) > 3) {
 //                snprintf(message, 255,
 //                         "Watchdog: thread %s is not responding. Terminating program...",
