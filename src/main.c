@@ -11,6 +11,7 @@
 #include "threading/reader.h"
 #include "threading/analyzer.h"
 #include "threading/printer.h"
+#include "threading/thread_manager.h"
 
 int main(void) {
     u16 core_count;
@@ -35,8 +36,7 @@ int main(void) {
     analyzer_init(core_count, read_data, analyzed_data);
     printer_init(core_count, analyzed_data);
 
-    sleep(5);
-//    program_handle_signal();
+    thread_manager_join();
 
     logger_destroy();
     buffer_destroy(read_data);
