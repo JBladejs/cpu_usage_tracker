@@ -79,3 +79,7 @@ void *thread_read_from_buffer(struct Thread *thread) {
     if (thread->read_buffer != NULL) return buffer_pop(thread->read_buffer);
     else return NULL;
 }
+
+void *thread_get_arg(struct Thread *thread) {
+    return thread->arg;
+}

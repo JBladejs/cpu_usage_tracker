@@ -37,6 +37,8 @@ void *thread_read_from_buffer(struct Thread *thread);
 
 void thread_join(struct Thread *thread);
 
+void *thread_get_arg(struct Thread *thread);
+
 sig_atomic_t thread_is_running(struct Thread *thread);
 
 void thread_stop(struct Thread *thread);

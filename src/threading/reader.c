@@ -9,32 +9,25 @@
 #include "thread.h"
 #include "buffer.h"
 
-static struct Statfile *stat_reader = NULL;
-
-static void reader_destroy(void) {
-    statfile_destroy(stat_reader);
-    stat_reader = NULL;
-}
-
 static void *reader_thread_routine(struct Thread *thread) {
-    u16 core_count = statfile_get_core_count(stat_reader);
+    struct Statfile *statfile = thread_get_arg(thread);
+    u16 core_count = statfile_get_core_count(statfile);
 
     struct CpuStats *stats = malloc(sizeof(struct CpuStats) * core_count);
 
     while (thread_is_running(thread)) {
         thread_time(thread, TRUE);
-        statfile_read(stat_reader, stats);
+        statfile_read(statfile, stats);
 
         thread_write_to_buffer(thread, stats);
         sleep(1);
     }
 
     free(stats);
-    reader_destroy();
+    statfile_destroy(statfile);
     return NULL;
 }
 
 void reader_init(struct Statfile *statfile, struct Buffer *buffer) {
-    stat_reader = statfile;
-    thread_create("reader", reader_thread_routine, NULL, buffer, true, NULL);
+    thread_create("reader", reader_thread_routine, NULL, buffer, true, statfile);
 }
