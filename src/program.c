@@ -12,5 +12,5 @@ void program_handle_signal(void) {
 }
 
 void program_terminate(void) {
-    thread_destroy_all();
+    thread_stop_all();
 }

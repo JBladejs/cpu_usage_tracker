@@ -11,7 +11,6 @@
 #include "../program.h"
 
 static struct Logfile *logfile;
-static struct Thread *thread;
 static struct Buffer *log_buffer = NULL;
 
 static void *logger_thread_routine(struct Thread *used_thread) {
@@ -34,8 +33,7 @@ void logger_init(void) {
         program_terminate();
     }
     log_buffer = BUFFER_NEW(char[255], 20);
-    thread = thread_create("logger", logger_thread_routine, log_buffer, NULL);
-    thread_run(thread);
+    thread_create("logger", logger_thread_routine, log_buffer, NULL);
 }
 
 void logger_log(char *message) {

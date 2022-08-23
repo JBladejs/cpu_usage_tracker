@@ -28,13 +28,13 @@ static struct ThreadManager *thread_manager_instance(void) {
     return &manager;
 }
 
-static pthread_t thread_manager_get_next_id(void) {
-    return (pthread_t) thread_manager_instance()->index++;
+static s32 thread_manager_get_next_id(void) {
+    return thread_manager_instance()->index++;
 }
 
-static void thread_manager_add_thread(struct Thread *thread) {
-    if (thread->thread_id > 9) return;
-    thread_manager_instance()->threads[thread->thread_id] = thread;
+static void thread_manager_add_thread(struct Thread *thread, s32 id) {
+    if (id > 9) return;
+    thread_manager_instance()->threads[id] = thread;
 }
 
 static void thread_manager_destroy_all(void) {
@@ -44,21 +44,6 @@ static void thread_manager_destroy_all(void) {
     for (s32 i = 0; i < index; ++i) {
         thread_stop(manager->threads[i]);
     }
-    for (s32 i = 0; i < index; ++i) {
-        thread_destroy(manager->threads[i]);
-    }
-}
-
-struct Thread *thread_create(char *name, void *(*start)(struct Thread *), struct Buffer *read_buffer, struct Buffer *write_buffer) {
-    struct Thread *thread = malloc(sizeof(struct Thread));
-    thread->thread_id = thread_manager_get_next_id();
-    thread->name = name;
-    thread->timer = 0;
-    thread->start_routine = start;
-    thread->read_buffer = read_buffer;
-    thread->write_buffer = write_buffer;
-    thread_manager_add_thread(thread);
-    return thread;
 }
 
 static void *thread_routine(void *arg) {
@@ -66,14 +51,26 @@ static void *thread_routine(void *arg) {
     return thread->start_routine(arg);
 }
 
-void thread_run(struct Thread *thread) {
+struct Thread *thread_create(char *name, void *(*start)(struct Thread *), struct Buffer *read_buffer, struct Buffer *write_buffer) {
+    struct Thread *thread = malloc(sizeof(struct Thread));
     u8 result;
+    s32 initial_id = thread_manager_get_next_id();
+    thread->thread_id = (pthread_t) initial_id;
+    thread->name = name;
+    thread->timer = 0;
+    thread->start_routine = start;
+    thread->read_buffer = read_buffer;
+    thread->write_buffer = write_buffer;
+
     thread->running = TRUE;
     result = (u8) pthread_create(&(thread->thread_id), NULL, thread_routine, thread);
     if (result != 0) {
         perror("Could not create a Thread!");
         exit(1);
     }
+
+    thread_manager_add_thread(thread, initial_id);
+    return thread;
 }
 
 void thread_join(struct Thread *thread) {
@@ -84,6 +81,8 @@ void thread_stop(struct Thread *thread) {
     thread->running = FALSE;
     if (thread->read_buffer != NULL) buffer_end(thread->read_buffer);
     if (thread->write_buffer != NULL) buffer_end(thread->write_buffer);
+    thread_join(thread);
+    free(thread);
 }
 
 sig_atomic_t thread_is_running(struct Thread *thread) {
@@ -111,11 +110,6 @@ void *thread_read_from_buffer(struct Thread *thread) {
     else return NULL;
 }
 
-void thread_destroy(struct Thread *thread) {
-    thread_join(thread);
-    free(thread);
-}
-
-void thread_destroy_all(void) {
+void thread_stop_all(void) {
     thread_manager_destroy_all();
 }
