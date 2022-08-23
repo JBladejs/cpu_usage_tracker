@@ -17,7 +17,6 @@ struct Thread {
     void *(*start_routine)(struct Thread *thread);
     volatile sig_atomic_t running;
     u8 timer;
-    s32 initial_id;
     pthread_mutex_t mutex;
 };
 
