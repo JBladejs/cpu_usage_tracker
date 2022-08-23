@@ -7,8 +7,8 @@
 #include "buffer.h"
 #include "../collections/queue.h"
 
-struct Buffer *buffer_create(u8 capacity, size_t element_size) {
-    struct Buffer *buffer = (struct Buffer *) malloc(sizeof(struct Buffer));
+Buffer *buffer_create(u8 capacity, size_t element_size) {
+    Buffer *buffer = (Buffer *) malloc(sizeof(Buffer));
     buffer->queue = queue_create(capacity, element_size);
     pthread_mutex_init(&buffer->mutex, NULL);
     sem_init(&buffer->empty, 0, capacity);
@@ -17,7 +17,7 @@ struct Buffer *buffer_create(u8 capacity, size_t element_size) {
     return buffer;
 }
 
-void buffer_push(struct Buffer *buffer, void *data) {
+void buffer_push(Buffer *buffer, void *data) {
     sem_wait(&buffer->empty);
     pthread_mutex_lock(&buffer->mutex);
 //    if (!buffer->active) return;
@@ -28,7 +28,7 @@ void buffer_push(struct Buffer *buffer, void *data) {
     sem_post(&buffer->full);
 }
 
-void *buffer_pop(struct Buffer *buffer) {
+void *buffer_pop(Buffer *buffer) {
     void *data;
     sem_wait(&buffer->full);
     pthread_mutex_lock(&buffer->mutex);
@@ -42,13 +42,13 @@ void *buffer_pop(struct Buffer *buffer) {
     return data;
 }
 
-void buffer_end(struct Buffer *buffer) {
+void buffer_end(Buffer *buffer) {
     buffer->active = FALSE;
     sem_post(&buffer->empty);
     sem_post(&buffer->full);
 }
 
-void buffer_destroy(struct Buffer *buffer) {
+void buffer_destroy(Buffer *buffer) {
     queue_destroy(buffer->queue);
     pthread_mutex_destroy(&buffer->mutex);
     sem_destroy(&buffer->empty);

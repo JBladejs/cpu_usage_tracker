@@ -13,8 +13,8 @@
 
 struct Logger {
     struct Logfile *logfile;
-    struct Buffer *log_buffer;
-    struct Thread *thread;
+    Buffer *log_buffer;
+    Thread *thread;
 };
 
 static struct Logger *logger_instance(void) {
@@ -22,7 +22,7 @@ static struct Logger *logger_instance(void) {
     return &logger;
 }
 
-static void *logger_thread_routine(struct Thread *thread) {
+static void *logger_thread_routine(Thread *thread) {
     struct Logger *logger = logger_instance();
     logger_log("Program started.");
     while (thread_is_running(thread)) {

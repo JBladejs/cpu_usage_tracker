@@ -11,7 +11,7 @@
 
 static u16 core_count = 1;
 
-static void *printer_thread_routine(struct Thread *thread) {
+static void *printer_thread_routine(Thread *thread) {
     f32 *usage = NULL;
     while (thread_is_running(thread)) {
         thread_time(thread, TRUE);
@@ -32,7 +32,7 @@ static void *printer_thread_routine(struct Thread *thread) {
     return NULL;
 }
 
-void printer_init(u16 cores, struct Buffer *buffer) {
+void printer_init(u16 cores, Buffer *buffer) {
     core_count = cores;
     thread_create("printer", printer_thread_routine, buffer, NULL, true, NULL);
 }

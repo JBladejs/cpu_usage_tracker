@@ -12,7 +12,7 @@
 
 static u16 core_count = 1;
 
-static void *analyzer_thread_routine(struct Thread *thread) {
+static void *analyzer_thread_routine(Thread *thread) {
     struct CpuStats *prev_stat = NULL;
     while (thread_is_running(thread)) {
         thread_time(thread, TRUE);
@@ -39,7 +39,7 @@ static void *analyzer_thread_routine(struct Thread *thread) {
     return NULL;
 }
 
-void analyzer_init(u16 cores, struct Buffer *read_buffer, struct Buffer *write_buffer) {
+void analyzer_init(u16 cores, Buffer *read_buffer, Buffer *write_buffer) {
     core_count = cores;
     thread_create("analyzer", analyzer_thread_routine, read_buffer, write_buffer, true, NULL);
 }

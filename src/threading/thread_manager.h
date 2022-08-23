@@ -8,9 +8,10 @@
 #include <bits/pthreadtypes.h>
 #include <bits/types/sig_atomic_t.h>
 #include "../common.h"
+#include "thread.h"
 
-struct ThreadManager {
-    struct Thread *threads[10];
+typedef struct ThreadManager {
+    Thread *threads[10];
     pthread_t watchdog_thread;
     s32 index;
     u32 active_threads;
@@ -18,13 +19,13 @@ struct ThreadManager {
 
     //padding
     u32 : 32;
-};
+} ThreadManager;
 
-struct ThreadManager *thread_manager_instance(void);
+ThreadManager *thread_manager_instance(void);
 
 s32 thread_manager_get_next_id(void);
 
-void thread_manager_add_thread(struct Thread *thread, s32 id);
+void thread_manager_add_thread(Thread *thread, s32 id);
 
 void thread_manager_join(void);
 

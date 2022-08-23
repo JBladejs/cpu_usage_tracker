@@ -10,8 +10,8 @@
 #include "logger.h"
 #include "../program.h"
 
-struct ThreadManager *thread_manager_instance(void) {
-    static struct ThreadManager manager;
+ThreadManager *thread_manager_instance(void) {
+    static ThreadManager manager;
     static u8 is_initialized = FALSE;
 
     if (!is_initialized) {
@@ -32,7 +32,7 @@ s32 thread_manager_get_next_id(void) {
 }
 
 static void *watchdog_thread_routine(void *arg) {
-    struct ThreadManager *manager = (struct ThreadManager *) arg;
+    ThreadManager *manager = (ThreadManager *) arg;
     char message[255];
     while (manager->running) {
         for (u32 i = 0; i < manager->active_threads; ++i) {
@@ -51,8 +51,8 @@ static void *watchdog_thread_routine(void *arg) {
     return NULL;
 }
 
-void thread_manager_add_thread(struct Thread *thread, s32 id) {
-    struct ThreadManager *manager = thread_manager_instance();
+void thread_manager_add_thread(Thread *thread, s32 id) {
+    ThreadManager *manager = thread_manager_instance();
     if (id > 9) return;
     manager->threads[id] = thread;
     if (manager->active_threads++ == 0) {
@@ -62,7 +62,7 @@ void thread_manager_add_thread(struct Thread *thread, s32 id) {
 }
 
 void thread_manager_destroy_all(void) {
-    struct ThreadManager *manager = thread_manager_instance();
+    ThreadManager *manager = thread_manager_instance();
     u32 index = manager->active_threads - 1;
     thread_manager_instance()->running = FALSE;
     if (index > 9) index = 9;

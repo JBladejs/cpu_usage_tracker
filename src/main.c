@@ -13,7 +13,7 @@
 int main(void) {
     u16 core_count;
     struct Statfile *statfile;
-    struct Buffer *read_data, *analyzed_data;
+    Buffer *read_data, *analyzed_data;
 
     program_setup_signal_handling();
 

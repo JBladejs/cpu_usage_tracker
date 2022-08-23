@@ -11,14 +11,14 @@
 #include "thread_manager.h"
 
 static void *thread_routine(void *arg) {
-    struct Thread *thread = (struct Thread *) arg;
+    Thread *thread = (Thread *) arg;
     return thread->start_routine(arg);
 }
 
-struct Thread *
-thread_create(char *name, void *(*start)(struct Thread *), struct Buffer *read_buffer,
-              struct Buffer *write_buffer, u8 tracked, void *arg) {
-    struct Thread *thread = malloc(sizeof(struct Thread));
+Thread *
+thread_create(char *name, void *(*start)(Thread *), Buffer *read_buffer,
+              Buffer *write_buffer, u8 tracked, void *arg) {
+    Thread *thread = malloc(sizeof(Thread));
     u8 result;
     s32 initial_id;
 
@@ -43,11 +43,11 @@ thread_create(char *name, void *(*start)(struct Thread *), struct Buffer *read_b
     return thread;
 }
 
-void thread_join(struct Thread *thread) {
+void thread_join(Thread *thread) {
     pthread_join(thread->thread_id, NULL);
 }
 
-void thread_stop(struct Thread *thread) {
+void thread_stop(Thread *thread) {
     thread->running = FALSE;
     if (thread->read_buffer != NULL) buffer_end(thread->read_buffer);
     if (thread->write_buffer != NULL) buffer_end(thread->write_buffer);
@@ -56,11 +56,11 @@ void thread_stop(struct Thread *thread) {
     free(thread);
 }
 
-sig_atomic_t thread_is_running(struct Thread *thread) {
+sig_atomic_t thread_is_running(Thread *thread) {
     return thread->running;
 }
 
-u8 thread_time(struct Thread *thread, u8 reset) {
+u8 thread_time(Thread *thread, u8 reset) {
     pthread_mutex_lock(&thread->mutex);
     if (reset) {
         thread->timer = 0;
@@ -71,15 +71,15 @@ u8 thread_time(struct Thread *thread, u8 reset) {
     return thread->timer;
 }
 
-void thread_write_to_buffer(struct Thread *thread, void *data) {
+void thread_write_to_buffer(Thread *thread, void *data) {
     if (thread->write_buffer != NULL) buffer_push(thread->write_buffer, data);
 }
 
-void *thread_read_from_buffer(struct Thread *thread) {
+void *thread_read_from_buffer(Thread *thread) {
     if (thread->read_buffer != NULL) return buffer_pop(thread->read_buffer);
     else return NULL;
 }
 
-void *thread_get_arg(struct Thread *thread) {
+void *thread_get_arg(Thread *thread) {
     return thread->arg;
 }

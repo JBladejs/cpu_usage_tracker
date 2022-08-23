@@ -9,7 +9,7 @@
 #include "thread.h"
 #include "buffer.h"
 
-static void *reader_thread_routine(struct Thread *thread) {
+static void *reader_thread_routine(Thread *thread) {
     struct Statfile *statfile = thread_get_arg(thread);
     u16 core_count = statfile_get_core_count(statfile);
 
@@ -28,6 +28,6 @@ static void *reader_thread_routine(struct Thread *thread) {
     return NULL;
 }
 
-void reader_init(struct Statfile *statfile, struct Buffer *buffer) {
+void reader_init(struct Statfile *statfile, Buffer *buffer) {
     thread_create("reader", reader_thread_routine, NULL, buffer, true, statfile);
 }
