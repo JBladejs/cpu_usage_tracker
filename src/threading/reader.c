@@ -2,7 +2,7 @@
 // Created by Alan Ćwiek on 8/18/22.
 //
 
-#include "reader.h"
+#include "main_threads.h"
 #include <unistd.h>
 #include <malloc.h>
 #include <stdbool.h>

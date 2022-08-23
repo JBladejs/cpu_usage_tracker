@@ -6,7 +6,7 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <stdbool.h>
-#include "printer.h"
+#include "main_threads.h"
 #include "thread.h"
 
 static u16 core_count = 1;

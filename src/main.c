@@ -6,11 +6,9 @@
 #include <stdlib.h>
 #include "program.h"
 #include "file_io/statfile.h"
-#include "threading/logger.h"
-#include "threading/reader.h"
-#include "threading/analyzer.h"
-#include "threading/printer.h"
+#include "threading/main_threads.h"
 #include "threading/thread_manager.h"
+#include "threading/logger.h"
 
 int main(void) {
     u16 core_count;

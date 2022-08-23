@@ -2,11 +2,10 @@
 // Created by Alan Ćwiek on 8/19/22.
 //
 
+#include "main_threads.h"
 #include <unistd.h>
 #include <malloc.h>
 #include <stdbool.h>
-#include "reader.h"
-#include "analyzer.h"
 #include "thread.h"
 #include "../helper/usage_calculator.h"
 #include "buffer.h"
