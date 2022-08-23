@@ -29,7 +29,7 @@ typedef struct Thread {
 } Thread;
 
 Thread *thread_create(char *name, void *(*start)(Thread *), Buffer *read_buffer,
-                             Buffer *write_buffer, u8 tracked, void *arg);
+                      Buffer *write_buffer, u8 tracked, void *arg);
 
 u8 thread_time(Thread *thread, u8 reset);
 
