@@ -30,7 +30,7 @@ int main(void) {
     read_data = BUFFER_ARRAY_NEW(struct CpuStats, core_count, 5);
     analyzed_data = BUFFER_ARRAY_NEW(f32, core_count, 10);
 
-////    logger_init();
+    logger_init();
     reader_init(statfile, read_data);
     analyzer_init(core_count, read_data, analyzed_data);
     printer_init(core_count, analyzed_data);
