@@ -22,8 +22,8 @@ file(GLOB HELPER_SOURCE_FILES "src/helper/*.c")
 file(GLOB COLLECTIONS_HEADER_FILES "src/collections/*.h")
 file(GLOB COLLECTIONS_SOURCE_FILES "src/collections/*.c")
 
-file(GLOB HEADER_FILES "src/*.h" "src/threading/*.h")
-file(GLOB SOURCE_FILES "src/*.c" "src/threading/*.c")
+file(GLOB HEADER_FILES "src/*.h" "src/threads/*.h")
+file(GLOB SOURCE_FILES "src/*.c" "src/threads/*.c")
 
 add_library(file_io ${FILE_IO_SOURCE_FILES} ${FILE_IO_HEADER_FILES})
 add_library(helper ${HELPER_SOURCE_FILES} ${HELPER_HEADER_FILES})

@@ -39,10 +39,10 @@ static void *watchdog_thread_routine(void *arg) {
 //    char message[255];
 //    while (1) {
 //        for (u32 i = 0; i < manager->active_threads; ++i) {
-//            if (thread_time(manager->threading[i], FALSE) > 3) {
+//            if (thread_time(manager->threads[i], FALSE) > 3) {
 //                snprintf(message, 255,
 //                         "Watchdog: thread %s is not responding. Terminating program...",
-//                         manager->threading[i]->name);
+//                         manager->threads[i]->name);
 ////                logger_log(message);
 //                program_terminate();
 //                return NULL;
