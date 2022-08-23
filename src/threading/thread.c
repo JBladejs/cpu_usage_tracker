@@ -8,8 +8,6 @@
 #include <string.h>
 #include "thread.h"
 #include "buffer.h"
-#include "logger.h"
-#include "../program.h"
 #include "thread_manager.h"
 
 
