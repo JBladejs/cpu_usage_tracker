@@ -12,7 +12,7 @@
 
 int main(void) {
     u16 core_count;
-    struct Statfile *statfile;
+    Statfile *statfile;
     Buffer *read_data, *analyzed_data;
 
     program_setup_signal_handling();
@@ -24,7 +24,7 @@ int main(void) {
     }
     core_count = statfile_get_core_count(statfile);
 
-    read_data = BUFFER_ARRAY_NEW(struct CpuStats, core_count, 5);
+    read_data = BUFFER_ARRAY_NEW(CpuStats, core_count, 5);
     analyzed_data = BUFFER_ARRAY_NEW(f32, core_count, 10);
 
     logger_init();

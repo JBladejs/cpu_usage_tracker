@@ -8,7 +8,7 @@
 
 static void queue_test(void) {
     int data[6];
-    struct Queue *queue = QUEUE_NEW(int, 5);
+    Queue *queue = QUEUE_NEW(int, 5);
     assert(queue != NULL);
     assert(queue_is_empty(queue));
     assert(!queue_is_full(queue));

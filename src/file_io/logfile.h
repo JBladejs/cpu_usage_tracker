@@ -9,17 +9,17 @@
 #include <bits/types/time_t.h>
 #include "../common.h"
 
-struct Logfile {
+typedef struct Logfile {
     char *file_name;
     FILE *file;
     time_t time;
-};
+} Logfile;
 
-struct Logfile *logfile_init(char *file_name);
+Logfile *logfile_init(char *file_name);
 
-void logfile_write(struct Logfile *logfile, char *message);
+void logfile_write(Logfile *logfile, char *message);
 
-void logfile_destroy(struct Logfile *logfile);
+void logfile_destroy(Logfile *logfile);
 
 
 #endif //CPU_USAGE_TRACKER_LOGFILE_H

@@ -16,8 +16,8 @@ struct Queue {
     u32 : 32;
 };
 
-struct Queue *queue_create(u8 capacity, size_t size) {
-    struct Queue *queue = (struct Queue *) malloc(sizeof(struct Queue));
+Queue *queue_create(u8 capacity, size_t size) {
+    Queue *queue = (Queue *) malloc(sizeof(Queue));
     queue->capacity = capacity;
     queue->element_size = size;
     queue->front = queue->size = 0;
@@ -26,15 +26,15 @@ struct Queue *queue_create(u8 capacity, size_t size) {
     return queue;
 }
 
-u8 queue_is_full(struct Queue *queue) {
+u8 queue_is_full(Queue *queue) {
     return queue->size == queue->capacity;
 }
 
-u8 queue_is_empty(struct Queue *queue) {
+u8 queue_is_empty(Queue *queue) {
     return queue->size == 0;
 }
 
-void queue_enqueue(struct Queue *queue, void *data) {
+void queue_enqueue(Queue *queue, void *data) {
     if (queue_is_full(queue)) {
         return;
     }
@@ -43,7 +43,7 @@ void queue_enqueue(struct Queue *queue, void *data) {
     memcpy((s8 *) queue->data + queue->back * queue->element_size, data, queue->element_size);
 }
 
-void *queue_dequeue(struct Queue *queue) {
+void *queue_dequeue(Queue *queue) {
     void *data;
     if (queue_is_empty(queue)) {
         return NULL;
@@ -55,7 +55,7 @@ void *queue_dequeue(struct Queue *queue) {
     return data;
 }
 
-void queue_destroy(struct Queue *queue) {
+void queue_destroy(Queue *queue) {
     free(queue->data);
     free(queue);
 }

@@ -7,7 +7,7 @@
 
 #include "../common.h"
 
-struct CpuStats {
+typedef struct CpuStats {
     u64 user;
     u64 nice;
     u64 system;
@@ -16,16 +16,16 @@ struct CpuStats {
     u64 irq;
     u64 softirq;
     u64 steal;
-};
+} CpuStats;
 
-struct Statfile;
+typedef struct Statfile Statfile;
 
-struct Statfile *statfile_initialize(char *file_name);
+Statfile *statfile_initialize(char *file_name);
 
-u16 statfile_get_core_count(struct Statfile *stats);
+u16 statfile_get_core_count(Statfile *stats);
 
-void statfile_read(struct Statfile *stats, struct CpuStats *stat);
+void statfile_read(Statfile *stats, CpuStats *stat);
 
-void statfile_destroy(struct Statfile *stats);
+void statfile_destroy(Statfile *stats);
 
 #endif //CPU_USAGE_TRACKER_STATFILE_H

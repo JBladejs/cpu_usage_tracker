@@ -9,7 +9,7 @@
 #include "../file_io/statfile.h"
 #include "buffer.h"
 
-void reader_init(struct Statfile *statfile, Buffer *buffer);
+void reader_init(Statfile *statfile, Buffer *buffer);
 
 void printer_init(u16 cores, Buffer *buffer);
 

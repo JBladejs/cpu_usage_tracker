@@ -13,11 +13,11 @@
 static u16 core_count = 1;
 
 static void *analyzer_thread_routine(Thread *thread) {
-    struct CpuStats *prev_stat = NULL;
+    CpuStats *prev_stat = NULL;
     while (thread_is_running(thread)) {
         thread_time(thread, TRUE);
         if (prev_stat != NULL) {
-            struct CpuStats *current = thread_read_from_buffer(thread);
+            CpuStats *current = thread_read_from_buffer(thread);
             f32 *usage;
             if (current == NULL) {
                 break;

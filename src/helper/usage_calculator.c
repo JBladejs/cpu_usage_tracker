@@ -4,7 +4,7 @@
 
 #include "usage_calculator.h"
 
-f32 usage_calculator_get_usage(struct CpuStats *prev, struct CpuStats *current) {
+f32 usage_calculator_get_usage(CpuStats *prev, CpuStats *current) {
     u64 prev_idle = prev->idle + prev->iowait;
     u64 idle = current->idle + current->iowait;
 

@@ -11,19 +11,19 @@
 #include "thread.h"
 #include "../program.h"
 
-struct Logger {
-    struct Logfile *logfile;
+typedef struct Logger {
+    Logfile *logfile;
     Buffer *log_buffer;
     Thread *thread;
-};
+} Logger;
 
-static struct Logger *logger_instance(void) {
-    static struct Logger logger = {NULL, NULL, NULL};
+static Logger *logger_instance(void) {
+    static Logger logger = {NULL, NULL, NULL};
     return &logger;
 }
 
 static void *logger_thread_routine(Thread *thread) {
-    struct Logger *logger = logger_instance();
+    Logger *logger = logger_instance();
     logger_log("Program started.");
     while (thread_is_running(thread)) {
         char *message = thread_read_from_buffer(thread);
@@ -37,7 +37,7 @@ static void *logger_thread_routine(Thread *thread) {
 }
 
 void logger_init(void) {
-    struct Logger *logger = logger_instance();
+    Logger *logger = logger_instance();
     logger->logfile = logfile_init("cpu_usage_tracker.log");
     if (logger->logfile == NULL) {
         perror("Error: could not initialize logfile\n");

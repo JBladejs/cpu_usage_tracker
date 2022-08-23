@@ -11,8 +11,8 @@
 #define UNUSED(x) ((void)(x))
 
 static void usage_test(void) {
-    struct CpuStats *stats1 = calloc(1, sizeof(struct CpuStats));
-    struct CpuStats *stats2 = calloc(1, sizeof(struct CpuStats));
+    CpuStats *stats1 = calloc(1, sizeof(CpuStats));
+    CpuStats *stats2 = calloc(1, sizeof(CpuStats));
     f64 usage;
 
     stats2->user = 50;

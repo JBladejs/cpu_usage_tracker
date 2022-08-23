@@ -15,7 +15,7 @@ struct Statfile {
     u64 : 48;
 };
 
-static u16 read_core_count(struct Statfile *reader) {
+static u16 read_core_count(Statfile *reader) {
     s8 cpu_name[255];
     u16 core_count;
     rewind(reader->file);
@@ -30,8 +30,8 @@ static u16 read_core_count(struct Statfile *reader) {
     return --core_count;
 }
 
-struct Statfile *statfile_initialize(char *file_name) {
-    struct Statfile *reader = malloc(sizeof(struct Statfile));
+Statfile *statfile_initialize(char *file_name) {
+    Statfile *reader = malloc(sizeof(Statfile));
     reader->file_name = file_name;
     reader->file = fopen(file_name, "r");
     if (reader->file == NULL) return NULL;
@@ -40,22 +40,22 @@ struct Statfile *statfile_initialize(char *file_name) {
     return reader;
 }
 
-u16 statfile_get_core_count(struct Statfile *reader) {
+u16 statfile_get_core_count(Statfile *reader) {
     return reader->core_count;
 }
 
-void statfile_read(struct Statfile *reader, struct CpuStats *stat) {
+void statfile_read(Statfile *reader, CpuStats *stat) {
     fflush(reader->file);
     rewind(reader->file);
     for (int i = 0; i < reader->core_count; ++i) {
-        struct CpuStats *current = &stat[i];
+        CpuStats *current = &stat[i];
         fscanf(reader->file, "%*s %ld %ld %ld %ld %ld %ld %ld %ld %*d %*d",
                &current->user, &current->nice, &current->system, &current->idle,
                &current->iowait, &current->irq, &current->softirq, &current->steal);
     }
 }
 
-void statfile_destroy(struct Statfile *reader) {
+void statfile_destroy(Statfile *reader) {
     if (reader->file != NULL) fclose(reader->file);
     free(reader);
 }
