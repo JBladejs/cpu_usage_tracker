@@ -17,7 +17,7 @@ static void *thread_routine(void *arg) {
 
 Thread *
 thread_init(char *name, void *(*start)(Thread *), Buffer *read_buffer,
-            Buffer *write_buffer, u8 tracked, void *arg) {
+            Buffer *write_buffer, u8 tracked, ThreadArg arg) {
     Thread *thread = malloc(sizeof(Thread));
     u8 result;
     s32 initial_id;
@@ -80,6 +80,6 @@ void *thread_read_from_buffer(Thread *thread) {
     else return NULL;
 }
 
-void *thread_get_arg(Thread *thread) {
+ThreadArg thread_get_arg(Thread *thread) {
     return thread->arg;
 }

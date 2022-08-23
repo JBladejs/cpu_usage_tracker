@@ -8,7 +8,13 @@
 #include "../common.h"
 #include "pthread.h"
 #include "buffer.h"
+#include "../file_io/statfile.h"
 #include <signal.h>
+
+typedef union ThreadArg {
+    u32 core_count;
+    Statfile *statfile;
+} ThreadArg;
 
 typedef struct Thread {
     pthread_mutex_t mutex;
@@ -19,7 +25,7 @@ typedef struct Thread {
 
     void *(*start_routine)(struct Thread *thread);
 
-    void *arg;
+    ThreadArg arg;
 
     volatile sig_atomic_t running;
     u8 timer;
@@ -29,7 +35,7 @@ typedef struct Thread {
 } Thread;
 
 Thread *thread_init(char *name, void *(*start)(Thread *), Buffer *read_buffer,
-                    Buffer *write_buffer, u8 tracked, void *arg);
+                    Buffer *write_buffer, u8 tracked, ThreadArg arg);
 
 u8 thread_time(Thread *thread, u8 reset);
 
@@ -37,7 +43,7 @@ void thread_write_to_buffer(Thread *thread, void *data);
 
 void *thread_read_from_buffer(Thread *thread);
 
-void *thread_get_arg(Thread *thread);
+ThreadArg thread_get_arg(Thread *thread);
 
 sig_atomic_t thread_is_running(Thread *thread);
 

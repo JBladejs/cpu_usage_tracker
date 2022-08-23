@@ -10,7 +10,7 @@
 #include "buffer.h"
 
 static void *reader_thread_routine(Thread *thread) {
-    Statfile *statfile = thread_get_arg(thread);
+    Statfile *statfile = thread_get_arg(thread).statfile;
     u16 core_count = statfile_get_core_count(statfile);
 
     CpuStats *stats = malloc(sizeof(CpuStats) * core_count);
@@ -29,5 +29,7 @@ static void *reader_thread_routine(Thread *thread) {
 }
 
 void reader_init(Statfile *statfile, Buffer *buffer) {
-    thread_init("reader", reader_thread_routine, NULL, buffer, true, statfile);
+    ThreadArg arg;
+    arg.statfile = statfile;
+    thread_init("reader", reader_thread_routine, NULL, buffer, true, arg);
 }

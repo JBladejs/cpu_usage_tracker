@@ -38,13 +38,14 @@ static void *logger_thread_routine(Thread *thread) {
 
 void logger_init(void) {
     Logger *logger = logger_instance();
+    ThreadArg arg;
     logger->logfile = logfile_init("cpu_usage_tracker.log");
     if (logger->logfile == NULL) {
         perror("Error: could not initialize logfile\n");
         program_terminate();
     }
     logger->log_buffer = BUFFER_NEW(char[255], 20);
-    logger->thread = thread_init("logger", logger_thread_routine, logger->log_buffer, NULL, false, NULL);
+    logger->thread = thread_init("logger", logger_thread_routine, logger->log_buffer, NULL, false, arg);
 }
 
 void logger_log(char *message) {

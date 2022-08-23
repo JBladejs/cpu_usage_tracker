@@ -10,10 +10,9 @@
 #include "../helper/usage_calculator.h"
 #include "buffer.h"
 
-static u16 core_count = 1;
-
 static void *analyzer_thread_routine(Thread *thread) {
     CpuStats *prev_stat = NULL;
+    u32 core_count = thread_get_arg(thread).core_count;
     while (thread_is_running(thread)) {
         thread_time(thread, TRUE);
         if (prev_stat != NULL) {
@@ -23,7 +22,7 @@ static void *analyzer_thread_routine(Thread *thread) {
                 break;
             }
             usage = malloc(sizeof(f32) * core_count);
-            for (int i = 0; i < core_count; ++i) {
+            for (u32 i = 0; i < core_count; ++i) {
                 usage[i] = usage_calculator_get_usage(&prev_stat[i], &current[i]);
             }
             thread_write_to_buffer(thread, usage);
@@ -40,6 +39,7 @@ static void *analyzer_thread_routine(Thread *thread) {
 }
 
 void analyzer_init(u16 cores, Buffer *read_buffer, Buffer *write_buffer) {
-    core_count = cores;
-    thread_init("analyzer", analyzer_thread_routine, read_buffer, write_buffer, true, NULL);
+    ThreadArg arg;
+    arg.core_count = cores;
+    thread_init("analyzer", analyzer_thread_routine, read_buffer, write_buffer, true, arg);
 }
