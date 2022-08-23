@@ -26,16 +26,17 @@ int main(void) {
     }
     core_count = statfile_get_core_count(statfile);
 
+
     read_data = BUFFER_ARRAY_NEW(struct CpuStats, core_count, 5);
     analyzed_data = BUFFER_ARRAY_NEW(f32, core_count, 10);
 
-//    logger_init();
+////    logger_init();
     reader_init(statfile, read_data);
     analyzer_init(core_count, read_data, analyzed_data);
     printer_init(core_count, analyzed_data);
 
     sleep(20);
-//    program_terminate();
+//    program_handle_signal();
 
     buffer_destroy(read_data);
     buffer_destroy(analyzed_data);

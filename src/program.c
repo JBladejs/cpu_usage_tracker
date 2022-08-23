@@ -26,7 +26,7 @@ void program_setup_signal_handling(void) {
 #endif
 
 void program_handle_signal(void) {
-    logger_log("Signal received. Terminating program...");
+//    logger_log("Signal received. Terminating program...");
     program_terminate();
 }
 
