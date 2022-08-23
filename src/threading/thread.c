@@ -21,6 +21,7 @@ thread_create(char *name, void *(*start)(struct Thread *), struct Buffer *read_b
     struct Thread *thread = malloc(sizeof(struct Thread));
     u8 result;
     s32 initial_id;
+
     initial_id = thread_manager_get_next_id();
     thread->thread_id = (pthread_t) initial_id;
     thread->name = name;
@@ -28,6 +29,8 @@ thread_create(char *name, void *(*start)(struct Thread *), struct Buffer *read_b
     thread->start_routine = start;
     thread->read_buffer = read_buffer;
     thread->write_buffer = write_buffer;
+    thread->arg = arg;
+
     pthread_mutex_init(&thread->mutex, NULL);
     thread->running = TRUE;
     result = (u8) pthread_create(&(thread->thread_id), NULL, thread_routine, thread);
