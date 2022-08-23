@@ -10,7 +10,14 @@
 #define QUEUE_NEW(type, capacity) queue_create(capacity, sizeof(type))
 
 /* Queue holding up to 255 elements*/
-typedef struct Queue Queue;
+typedef struct Queue {
+    size_t element_size;
+    void *data;
+    u8 front, back, size;
+    u8 capacity;
+    //padding
+    u32 : 32;
+} Queue;
 
 Queue *queue_create(u8 capacity, size_t size);
 

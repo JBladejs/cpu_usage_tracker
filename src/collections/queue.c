@@ -7,15 +7,6 @@
 #include <string.h>
 #include "queue.h"
 
-struct Queue {
-    size_t element_size;
-    void *data;
-    u8 front, back, size;
-    u8 capacity;
-    //padding
-    u32 : 32;
-};
-
 Queue *queue_create(u8 capacity, size_t size) {
     Queue *queue = (Queue *) malloc(sizeof(Queue));
     queue->capacity = capacity;

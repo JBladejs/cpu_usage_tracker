@@ -5,6 +5,7 @@
 #ifndef CPU_USAGE_TRACKER_STATFILE_H
 #define CPU_USAGE_TRACKER_STATFILE_H
 
+#include <bits/types/FILE.h>
 #include "../common.h"
 
 typedef struct CpuStats {
@@ -18,7 +19,14 @@ typedef struct CpuStats {
     u64 steal;
 } CpuStats;
 
-typedef struct Statfile Statfile;
+typedef struct Statfile {
+    FILE *file;
+    char *file_name;
+    u16 core_count;
+
+    //padding
+    u64 : 48;
+} Statfile;
 
 Statfile *statfile_initialize(char *file_name);
 

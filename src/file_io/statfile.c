@@ -2,18 +2,8 @@
 // Created by Alan Ćwiek on 8/20/22.
 //
 
-#include <bits/types/FILE.h>
 #include <malloc.h>
 #include "statfile.h"
-
-struct Statfile {
-    FILE *file;
-    char *file_name;
-    u16 core_count;
-
-    //padding
-    u64 : 48;
-};
 
 static u16 read_core_count(Statfile *reader) {
     s8 cpu_name[255];
